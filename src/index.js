@@ -41,7 +41,8 @@ const testphoto = "https://thespinoff.co.nz/wp-content/uploads/2019/02/sam-56.jp
 
 
 class Photo{
-  //this will generate photo objects that we retreive from database.
+  //our data is going to come in as objects already, this may not be necessary.
+  //It would be necessary if we were uploading our own photos.
   constructor(options){
     this.image = options.image
     this.tags = options.tags
@@ -117,7 +118,9 @@ class Application extends React.Component {
       tags: {},
       newtag: '',
       clicked: null,
-      score: 0
+      score: 0,
+      data: [],
+      receivedData: false
 
 
     }
@@ -126,6 +129,12 @@ class Application extends React.Component {
     this.playGame = this.playGame.bind(this)
     this.tagInput = this.tagInput.bind(this)
     this.tagPhoto = this.tagPhoto.bind(this)
+    this.getData = this.getData.bind(this)
+  }
+
+  async componentWillMount(){
+    var data = await this.getData()
+    this.setState({data: data, receivedData: true})
   }
 
 
@@ -250,8 +259,16 @@ class Application extends React.Component {
     this.setState({game: false, clicked: null})
   }
 
-  render(){
 
+
+  async getData(){
+    var data = await fetch("http://localhost:3001",{mode:"cors"})
+    var parsedata = await data.json()
+    return parsedata
+
+  }
+
+  render(){
     let score = null
     let game = "WHAT'S"
     if (this.state.game){
