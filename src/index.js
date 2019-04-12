@@ -55,10 +55,10 @@ class Photo{
   constructor(options){
     this.image = options.image
     this.tags = options.tags
-    this.tagPhoto = this.tagPhoto.bind(this)
+    this.tagPhotoStatus = this.tagPhotoStatus.bind(this)
   }
 
-  tagPhoto(id, name){
+  tagPhotoStatus(id, name){
     //depending on which div is clicked will get id to create tag with key = id.
     this.tags[id] = name
   }
@@ -141,7 +141,8 @@ class Application extends React.Component {
       clicked: null,
       score: 0,
       data: [],
-      receivedData: false
+      receivedData: false,
+      photoId: null
 
 
     }
@@ -149,9 +150,10 @@ class Application extends React.Component {
     this.processClick = this.processClick.bind(this)
     this.playGame = this.playGame.bind(this)
     this.tagInput = this.tagInput.bind(this)
-    this.tagPhoto = this.tagPhoto.bind(this)
+    this.tagPhotoStatus = this.tagPhotoStatus.bind(this)
     this.getData = this.getData.bind(this)
     this.typeOfPhotoDisplay = this.typeOfPhotoDisplay.bind(this)
+    this.submitTags = this.submitTags.bind(this)
   }
 
   async componentWillMount(){
@@ -167,15 +169,31 @@ class Application extends React.Component {
     //this conflicts with the checkTag because we're clicking on this div inside that div.
   }
 
-  enterPressed(e){
+  submitTagForPhoto(e){
+    //this is when the
     var code = e.keyCode || e.which
     if (code === 13){
       //this is essentially the submit for newtag.
       var copyTags = this.state.tags
       copyTags[this.state.clicked] = this.state.newtag
       this.setState({tags:copyTags, clicked: null, newtag: ''})
+      //will need to post the info back to server here:
 
     }
+  }
+
+  submitTags(){
+    fetch("http://localhost:3001", {
+        method: "post",
+        headers: {
+            "Content-Type": "application/json"},
+        body: JSON.stringify({
+          id: this.state.photoId,
+          tags: this.state.tags
+          }
+        )
+      })
+      console.log("SUBMIT TAGS RAN.")
   }
 
   tagInput(e){
@@ -257,7 +275,7 @@ class Application extends React.Component {
           }
         }else{
           if (gridnum === this.state.clicked){
-            popupbox = <input type = "text" value = {this.state.newtag} onChange = {this.tagInput} onKeyPress={this.enterPressed.bind(this)} style ={{opacity:3}}/>
+            popupbox = <input type = "text" value = {this.state.newtag} onChange = {this.tagInput} onKeyPress={this.submitTagForPhoto.bind(this)} style ={{opacity:3}}/>
           }
 
           //AT THE START NOTHING HAS A PROCESS CLICK EVENT LISTENER BECAUSE NOTHING IS CLICKED AT THE START.
@@ -277,7 +295,7 @@ class Application extends React.Component {
 
   }
 
-  tagPhoto(){
+  tagPhotoStatus(){
     this.setState({game: false, clicked: null})
   }
 
@@ -293,7 +311,8 @@ class Application extends React.Component {
   selectPhoto(id){
     var selectedPhoto = this.state.data[id].url
     this.setState({
-      photo: selectedPhoto
+      photo: selectedPhoto,
+      photoId: id
     })
   }
 
@@ -318,7 +337,7 @@ class Application extends React.Component {
 
   render(){
     let grid = null
-
+    let storeTags = null
     if (this.state.photo !== null){
       //we don't need the grid for the index.
       grid =
@@ -335,14 +354,15 @@ class Application extends React.Component {
         <h2>Score</h2>
         <p>{this.state.score}</p>
 
-        <h4 onClick = {this.tagPhoto}>Tag My Own Names!</h4>
+        <h4 onClick = {this.tagPhotoStatus}>Tag My Own Names!</h4>
       </div>
     }else{
       game = "TAG"
+      storeTags = <button onClick= {this.submitTags}>Save Tags</button>
       score =
       <h4 onClick = {this.playGame}>Play Guessing Game </h4>
     }
-    console.log(this.state)
+
 
 
 
@@ -350,16 +370,22 @@ class Application extends React.Component {
     return(
       <div className = "application">
         <h1>{game} THAT POKEMON</h1>
-        {score}
 
+        {score}
+        <div className = "store-tags">
+          {storeTags}
+        </div>
         <br/>
         <br/>
         <br/>
         <br/>
-        <div className = "main container" style = {{position: "relative"}}>
+
+        <div className = "main-container" style = {{position: "relative"}}>
           {grid}
           {this.typeOfPhotoDisplay()}
+
         </div>
+
       </div>
     )
   }
