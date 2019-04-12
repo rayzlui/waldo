@@ -28,6 +28,15 @@ Goals:
     - On game if should render random names along with correct name, if correct we'll have an alert saying yes and if not will have try again
     - On tag, we'll have an input box.
 
+  - We want to build:
+    1. User calls page, should render options of photos to choose
+      - Need to expand photoDOM to check state for received data.
+        - If received array, will need to build out divs for small photos.
+        - Photos will have click to link to photo. Need status to differentiate index of photos shown and just one photo.
+      - On selection, we will not need to call backend again, just need to load it into state.photo.
+    2. If error, will load the testphoto
+      - Need a status to differentiate between index and id.
+
 2. Backend
   - Learn MongoDB
   - Learn Node.js
@@ -96,14 +105,26 @@ class Grid extends React.Component{
 class PhotoDOM extends React.Component{
 //photoDOM only deals with the DOM stuff, we'll have an actual photo
 //class that will break down the info from the database (namely the photourl and tags)
+  constructor(props){
+    super(props)
+    this.selectPhoto = this.selectPhoto.bind(this)
+  }
+
+  selectPhoto(){
+    this.props.selectPhoto(this.props.id)
+  }
 
   render(){
+    let click = null
+    if (this.props.height > 1){
+      click = this.selectPhoto
+    }
 
     return(
 
-        <div className = "photocontainer" style = {{position: "absolute", zIndex: -1,height: 500, width: 800}}>
-          <img src = {this.props.photo} alt = {"ohnoesy i broked"} style = {{height: 500 , width: 800}} />
-        </div>
+      <img src = {this.props.photo} alt = {"ohnoesy i broked"} onClick = {click} style = {{height: 500/this.props.height , width: 800/this.props.width, display: "inline-block"}} />
+
+
 
     )
   }
@@ -113,7 +134,7 @@ class Application extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      photo: testphoto,
+      photo: null,
       game: false,
       tags: {},
       newtag: '',
@@ -130,6 +151,7 @@ class Application extends React.Component {
     this.tagInput = this.tagInput.bind(this)
     this.tagPhoto = this.tagPhoto.bind(this)
     this.getData = this.getData.bind(this)
+    this.typeOfPhotoDisplay = this.typeOfPhotoDisplay.bind(this)
   }
 
   async componentWillMount(){
@@ -268,7 +290,42 @@ class Application extends React.Component {
 
   }
 
+  selectPhoto(id){
+    var selectedPhoto = this.state.data[id].url
+    this.setState({
+      photo: selectedPhoto
+    })
+  }
+
+  typeOfPhotoDisplay(){
+    let display
+    if (this.state.photo !== null){
+      display = <PhotoDOM photo = {this.state.photo} alt = {"uh oh i brokesy"} height = {1} width = {1}/>
+    }else{
+      display = []
+      var photos = this.state.data
+      for (var i = 0; i < photos.length;i++){
+        //need an click event listener to select photo.
+        display.push(<PhotoDOM photo = {photos[i].url} key = {i} id = {i} alt = {"uh oh i brokesy"} selectPhoto = {this.selectPhoto.bind(this)} height = {photos.length +1 } width = {photos.length + 1}/>)
+      }
+    }
+    return (
+      <div className = "photocontainer" style = {{position: "absolute", zIndex: -1,height: 500, width: 800}}>
+        {display}
+      </div>
+    )
+  }
+
   render(){
+    let grid = null
+
+    if (this.state.photo !== null){
+      //we don't need the grid for the index.
+      grid =
+      <div className = "gridcontainer" style ={{position: "absolute", zIndex:2, height: 500, width: 800}}>
+        {this.buildGrids()}
+      </div>
+    }
     let score = null
     let game = "WHAT'S"
     if (this.state.game){
@@ -285,6 +342,9 @@ class Application extends React.Component {
       score =
       <h4 onClick = {this.playGame}>Play Guessing Game </h4>
     }
+    console.log(this.state)
+
+
 
 
     return(
@@ -297,10 +357,8 @@ class Application extends React.Component {
         <br/>
         <br/>
         <div className = "main container" style = {{position: "relative"}}>
-          <div className = "gridcontainer" style ={{position: "absolute", zIndex:2, height: 500, width: 800}}>
-            {this.buildGrids()}
-          </div>
-          <PhotoDOM photo = {this.state.photo} alt = {"uh oh i brokesy"}/>
+          {grid}
+          {this.typeOfPhotoDisplay()}
         </div>
       </div>
     )
