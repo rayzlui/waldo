@@ -44,9 +44,19 @@ app.get("/",(req,res)=>{
   res.send(testdata)
 })
 
+app.get("/tags",(req,res)=>{
+  //this will be a way to search for photos with a certain tag. work in progess idea.
+})
+
 app.post("/",(req,res)=>{
   var data = req.body
-  //data is the object we sent from frontend.
+  //data is the object we sent from frontend. we will recieve in format {id: tags:}}
+  //id will be Number, an id for photo, tags will be an array of tags (in string format)
+  //we want to find or create tags first. so we'll have to check tag database for the tag.
+    //if the database has the tag, we'll simply add the id to the tags ids
+    //if it does not we'll create a tag and add id for photo.
+  //then we add the id of the tag into the tags for the photo.
+  
 })
 
 
