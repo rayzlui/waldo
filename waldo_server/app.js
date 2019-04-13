@@ -46,7 +46,7 @@ app.get("/",(req,res)=>{
 
 app.post("/",(req,res)=>{
   var data = req.body
-  console.log(data)
+  //data is the object we sent from frontend.
 })
 
 
