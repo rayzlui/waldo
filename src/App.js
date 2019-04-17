@@ -45,10 +45,12 @@ class App extends Component {
 
   async componentWillMount(){
     var data = await this.getData()
-    if (typeof(data) === Array){
-      this.setState({data: data, receivedData:true})
+
+    if (typeof(data)==='string'){
+      this.setState({photo: data})
     }else{
-      this.setState({photo:data})
+
+      this.setState({data: data, receivedData:true})
     }
 
   }
@@ -66,6 +68,16 @@ class App extends Component {
 
     }
     return data
+  }
+
+  async getTagName(id){
+    try {
+      var data = await fetch(`http://localhost:3001/tags/${id}`,{mode:"cors"})
+      var tag =  await data.json()
+      return tag[0].tag
+    }catch{
+      prompt("Unable to Connect to Server")
+    }
   }
 
   submitTagForPhoto(e){
@@ -191,11 +203,24 @@ class App extends Component {
     )
   }
 
-  selectPhoto(id){
-    var selectedPhoto = this.state.data[id].url
-    this.setState({
+
+  async selectPhoto(id){
+    var selectedPhoto = this.state.data[id].photo
+    var tags = this.state.data[id].tags
+    var newtags = {}
+    for (var i = 0; i < tags.length; i++){
+      var div = tags[i][1]/1 //make it a number.
+      var tagId = tags[i][0]
+      var tagname = await this.getTagName(tagId)
+
+      newtags[div] = await tagname
+
+    }
+  
+    await this.setState({
       photo: selectedPhoto,
-      photoId: id
+      photoId: id,
+      tags: newtags
     })
   }
 
@@ -204,7 +229,7 @@ class App extends Component {
     var photos = data
     for (var i = 0; i < photos.length;i++){
       //need an click event listener to select photo.
-      display.push(<Photo photo = {photos[i].url} key = {i} id = {i} alt = {"uh oh i brokesy"} selectPhoto = {this.selectPhoto.bind(this)} height = {photos.length +1 } width = {photos.length + 1}/>)
+      display.push(<Photo photo = {photos[i].photo} key = {i} id = {photos[i].key} alt = {"uh oh i brokesy"} selectPhoto = {this.selectPhoto.bind(this)} height = {photos.length +1 } width = {photos.length + 1}/>)
     }
     return display
   }
