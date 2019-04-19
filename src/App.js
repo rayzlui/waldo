@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-
-import Grid from './Grid'
-import Options from './Option'
 import {scoreCard, typeOfPhotoDisplay} from './PhotoDOM'
-import {getData, getTagName} from './asyncfunc'
+import {getData, getTagName, submitTagsToServer} from './DataConnect'
+import GridDOM from './GridDOM'
 import './App.css';
 
 class App extends Component {
@@ -23,7 +21,6 @@ class App extends Component {
 
 
     }
-    this.buildGrids = this.buildGrids.bind(this)
   }
 
   processClick(id){
@@ -51,13 +48,10 @@ class App extends Component {
 
       this.setState({data: data, receivedData:true})
     }
-
   }
 
 
-
   submitTagForPhoto(e){
-    //this is when the
     var code = e.keyCode || e.which
     if (code === 13){
       //this is essentially the submit for newtag.
@@ -68,19 +62,25 @@ class App extends Component {
     }
   }
 
-  submitTagsToServer(){
-    fetch("http://localhost:3001", {
-        method: "post",
-        headers: {
-            "Content-Type": "application/json"},
-        body: JSON.stringify({
-          id: this.state.photoId,
-          tags: this.state.tags
-          }
-        )
-      })
-  }
 
+  async  selectedPhotoFromIndex(id){
+    var data = this.state.data[id]
+    var selectedPhoto = data.photo
+    var tags = data.tags
+    var newtags = {}
+    for (var i = 0; i < tags.length; i++){
+      var div = tags[i][1]/1 //make it a number.
+      var tagId = tags[i][0]
+      var tagname = await getTagName(tagId)
+      newtags[div] = await tagname
+    }
+
+    await this.setState({
+      photo: selectedPhoto,
+      photoId: id,
+      tags: newtags
+    })
+  }
 
   checkTagForGame(e){
     //used to check if selected name is correct.
@@ -97,85 +97,6 @@ class App extends Component {
     this.setState({clicked: null, score: score})
   }
 
-
-
-  
-
-  buildGrids(){
-    //in game mode, we'll highlight the spots do that do have a tag, all other divs will not be clickable.
-    let grid = []
-    for (var i = 0; i< 8; i++){
-      var row = []
-      for (var j = 0; j < 8; j++){
-
-        var gridnum = (8*i)+j
-        let popupbox = null
-        let click = this.processClick.bind(this)
-        let game = null
-
-        if (this.state.game){
-
-          if (this.state.tags[gridnum] !== undefined){
-            //if we are in game mode, we want to highlight divs that have tags for players to click and guess.
-            game = true
-            if (gridnum === this.state.clicked){
-              //when the div is clicked, it will display the options.
-              popupbox = <Options tags = {this.state.tags} gridnum = {gridnum} checkTagForGame = {this.checkTagForGame.bind(this)}/>
-                        
-            }
-          }else{
-            //if there's no tag at the div, we don't want it to be clickable.
-            click = null
-
-          }
-
-        }else{
-          //if we're not in game, we want grids to be invisible until clicked for an input box.
-          if (gridnum === this.state.clicked){
-            popupbox = <input type = "text" value = {this.state.newtag} onChange = {this.tagInput.bind(this)} onKeyPress={this.submitTagForPhoto.bind(this)} style ={{opacity:3}}/>
-          }
-
-          //AT THE START NOTHING HAS A PROCESS CLICK EVENT LISTENER BECAUSE NOTHING IS CLICKED AT THE START.
-
-        }
-        var square = <Grid key = {gridnum} id = {gridnum} processClick = {click} popupbox = {popupbox} game = {game}/>
-        row.push(square)
-      }
-      grid.push(row)
-    }
-    return (
-      <div className = "gridcontainer" style ={{position: "absolute", zIndex:2, height: 500, width: 800}}>
-        {grid}
-      </div>
-    )
-  }
-
-  async  selectedPhotoFromIndex(id){
-    var data = this.state.data[id]
-    var selectedPhoto = data.photo
-    var tags = data.tags
-    var newtags = {}
-    for (var i = 0; i < tags.length; i++){
-      var div = tags[i][1]/1 //make it a number.
-      var tagId = tags[i][0]
-      var tagname = await getTagName(tagId)
-
-      newtags[div] = await tagname
-
-    }
-
-    await this.setState({
-      photo: selectedPhoto,
-      photoId: id,
-      tags: newtags
-    })
-  }
-
-
-  
-
-
-
   render(){
 
     let grid = null
@@ -187,7 +108,8 @@ class App extends Component {
     if (this.state.photo !== null){
       //we don't need the grid for the index.
       button = null
-      grid = this.buildGrids()
+      grid = 
+        <GridDOM state = {this.state} checkTagForGame = {this.checkTagForGame.bind(this)} processClick = {this.processClick.bind(this)} submitTagForPhoto = {this.submitTagForPhoto.bind(this)} tagInput = {this.tagInput.bind(this)}/>
     }
 
     if (this.state.game){
@@ -195,7 +117,7 @@ class App extends Component {
 
     }else{
       game = "TAG"
-      storeTags = <button onClick= {this.submitTagsToServer.bind(this)}>Save Tags</button>
+      storeTags = <button onClick= {()=>submitTagsToServer({photoId: this.state.photoId, tags: this.state.tags})}>Save Tags</button>
       score = <h4 onClick = {this.playGame.bind(this)}>Play Guessing Game </h4>
     }
 
