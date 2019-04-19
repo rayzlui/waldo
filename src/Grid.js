@@ -19,14 +19,15 @@ class Grid extends React.Component{
   render(){
     let click = this.processClick
     let style = {height: 500/8-2, width: 800/8-2, display: "inline-grid", gridGap: 0, border: 1, position:"relative", zLength:0}
-    if (this.props.game === true){
+    if (this.props.game !== null){
       //this is if we're in the game and we're showing the user the possible options to play on.
       style.border = "1px solid purple"
     }
+    //popupbox really should only exist when we're in game mode.
     if (this.props.popupbox !== null){
       //this is when they click on one of the divs to play on.
-      style.border =  "1px solid black"
-      click = null
+      style.border =  "1px solid green"
+      click = null//if there is a popupbox, we want our click to activate in the popup box and not in this div.
     }
 
     return(

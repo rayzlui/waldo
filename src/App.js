@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 
-import Photo from './Photo'
 import Grid from './Grid'
+import Options from './Option'
+import {scoreCard, typeOfPhotoDisplay} from './PhotoDOM'
+import {getData, getTagName} from './asyncfunc'
 import './App.css';
 
 class App extends Component {
@@ -22,9 +24,6 @@ class App extends Component {
 
     }
     this.buildGrids = this.buildGrids.bind(this)
-    this.getData = this.getData.bind(this)
-    this.typeOfPhotoDisplay = this.typeOfPhotoDisplay.bind(this)
-    this.createPhotosIndex = this.createPhotosIndex.bind(this)
   }
 
   processClick(id){
@@ -44,7 +43,7 @@ class App extends Component {
   }
 
   async componentWillMount(){
-    var data = await this.getData()
+    var data = await getData()
 
     if (typeof(data)==='string'){
       this.setState({photo: data})
@@ -55,30 +54,7 @@ class App extends Component {
 
   }
 
-  async getData(){
-    var data
-    try {
-      var parsedata = await fetch("http://localhost:3001",{mode:"cors"})
-      data = await parsedata.json()
 
-    } catch(err){
-      alert("Unable to access server, please play with Minions for the time being.")
-
-      data = "https://www.muraldecal.com/en/img/fomi030_1-jpg/folder/products-detalle-muestras-grandes/wall-murals-minions.jpg"
-
-    }
-    return data
-  }
-
-  async getTagName(id){
-    try {
-      var data = await fetch(`http://localhost:3001/tags/${id}`,{mode:"cors"})
-      var tag =  await data.json()
-      return tag[0].tag
-    }catch{
-      prompt("Unable to Connect to Server")
-    }
-  }
 
   submitTagForPhoto(e){
     //this is when the
@@ -123,34 +99,7 @@ class App extends Component {
 
 
 
-  generateSelectOptionsForGame(id){
-    let options = []
-    let randomKey = id
-    //random decides which select option is going to be the correct one.
-    //if we're playing game we should ONLY USE KEYS THAT HAVE VALUES.
-    let tagKeys = Object.keys(this.state.tags).map(x=>x/1)
-    tagKeys.splice(tagKeys.indexOf(id),1)
-    //remove id from the wrong options to prevent duplicate correct answer.
-
-    let limit = tagKeys.length >= 5? 5 : tagKeys.length//
-    let random = Math.floor(Math.random()*(limit))
-    for (var i = 0; i<=limit;i++){
-      //randomKey gets a random id from the tags
-      let tag = this.state.tags[randomKey]
-      let val = 0
-      //val is true/false. if val == 1, it's the correct option, if val == 0, it's incorrect.
-      if (i===random){
-        tag = this.state.tags[id]
-        val = 1
-      }else{
-        randomKey = tagKeys.splice(Math.floor((tagKeys.length-1)*Math.random()),1)[0]
-      }
-        options.push(<option value = {val} key = {randomKey} id = {randomKey} onClick = {this.checkTagForGame.bind(this)} style= {{fontSize: 14}}>{tag}</option>)
-
-
-    }
-    return options
-  }
+  
 
   buildGrids(){
     //in game mode, we'll highlight the spots do that do have a tag, all other divs will not be clickable.
@@ -162,7 +111,7 @@ class App extends Component {
         var gridnum = (8*i)+j
         let popupbox = null
         let click = this.processClick.bind(this)
-        let game = false
+        let game = null
 
         if (this.state.game){
 
@@ -171,10 +120,8 @@ class App extends Component {
             game = true
             if (gridnum === this.state.clicked){
               //when the div is clicked, it will display the options.
-              popupbox =
-                        <div style={{backgroundColor: "white", opacity: 2, position: "absolute", zLength: 100}}>
-                          {this.generateSelectOptionsForGame(gridnum)}
-                        </div>
+              popupbox = <Options tags = {this.state.tags} gridnum = {gridnum} checkTagForGame = {this.checkTagForGame.bind(this)}/>
+                        
             }
           }else{
             //if there's no tag at the div, we don't want it to be clickable.
@@ -203,20 +150,20 @@ class App extends Component {
     )
   }
 
-
-  async selectPhoto(id){
-    var selectedPhoto = this.state.data[id].photo
-    var tags = this.state.data[id].tags
+  async  selectedPhotoFromIndex(id){
+    var data = this.state.data[id]
+    var selectedPhoto = data.photo
+    var tags = data.tags
     var newtags = {}
     for (var i = 0; i < tags.length; i++){
       var div = tags[i][1]/1 //make it a number.
       var tagId = tags[i][0]
-      var tagname = await this.getTagName(tagId)
+      var tagname = await getTagName(tagId)
 
       newtags[div] = await tagname
 
     }
-  
+
     await this.setState({
       photo: selectedPhoto,
       photoId: id,
@@ -224,40 +171,8 @@ class App extends Component {
     })
   }
 
-  createPhotosIndex(data){
-    let display = []
-    var photos = data
-    for (var i = 0; i < photos.length;i++){
-      //need an click event listener to select photo.
-      display.push(<Photo photo = {photos[i].photo} key = {i} id = {photos[i].key} alt = {"uh oh i brokesy"} selectPhoto = {this.selectPhoto.bind(this)} height = {photos.length +1 } width = {photos.length + 1}/>)
-    }
-    return display
-  }
 
-  typeOfPhotoDisplay(){
-    let display
-    if (this.state.photo !== null){
-      display = <Photo photo = {this.state.photo} alt = {"uh oh i brokesy"} height = {1} width = {1}/>
-    }else{
-      display = this.createPhotosIndex(this.state.data)
-    }
-    return (
-      <div className = "photocontainer" style = {{position: "absolute", zIndex: -1,height: 500, width: 800}}>
-        {display}
-      </div>
-    )
-  }
-
-  scoreCard(){
-    return (
-      <div className = "scorecard">
-        <h2>Score</h2>
-        <p>{this.state.score}</p>
-
-        <h4 onClick = {this.tagPhotoStatus.bind(this)}>Tag My Own Names!</h4>
-      </div>
-    )
-  }
+  
 
 
 
@@ -276,7 +191,7 @@ class App extends Component {
     }
 
     if (this.state.game){
-      score = this.scoreCard()
+      score = scoreCard({score: this.state.score, tagPhotoStatus: this.tagPhotoStatus.bind(this)})
 
     }else{
       game = "TAG"
@@ -294,14 +209,11 @@ class App extends Component {
         <div className = "store-tags">
           {storeTags}
         </div>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
+        
 
-        <div className = "main-container" style = {{position: "relative"}}>
+        <div className = "main-container" style = {{position: "relative", paddingTop: 80}}>
           {grid}
-          {this.typeOfPhotoDisplay()}
+          {typeOfPhotoDisplay({photo:this.state.photo, data:this.state.data, func: this.selectedPhotoFromIndex.bind(this)})}
 
         </div>
 

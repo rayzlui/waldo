@@ -105,7 +105,6 @@ app.post("/",(req,res)=>{
      //we will also push the array of [div.id, tag] into the photo db.
       var copy = photo.tags
       newtags.concat(copy)
-      console.log(newtags)
       photo.tags = newtags
       photo.save(function(err){
       if (err){
