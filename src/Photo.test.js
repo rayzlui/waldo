@@ -1,6 +1,6 @@
 
 import React from 'react'
-import Photo from "./Photo.js"; 
+import Photo from "./Photo.js";  
 import {shallow} from 'enzyme'
 
 describe("Photo", ()=>{
@@ -12,31 +12,16 @@ describe("Photo", ()=>{
 
     it("should display 'imgurl' when prop.photo = 'imgurl'", () => {
         const component = shallow(<Photo photo = {"imgurl"}/>);
-
-        expect(component).toMatchSnapshot();
+        
+        //check that img.src = imgurl
     });
 
-    it('should not have click function when height > 1', ()=> {
-        const component = shallow(<Photo height = {2}/>)
+    //check img.onclick = click
+    //check img.onclick = null
+    //check height = 500
+    //check height = 500/x
+    //check width = 800
+    //check width = 800/x
 
-        expect(component).toMatchSnapshot()
-    })
-
-    it('should have click function when height == 1', ()=> {
-        const component = shallow(<Photo height = {1}/>)
-
-        expect(component).toMatchSnapshot()
-    })
-
-    it('should not have click function when width > 1', ()=> {
-        const component = shallow(<Photo width = {2}/>)
-
-        expect(component).toMatchSnapshot()
-    })
-
-    it('should have click function when height == 1', ()=> {
-        const component = shallow(<Photo width = {1}/>)
-
-        expect(component).toMatchSnapshot()
-    })
+    
 })

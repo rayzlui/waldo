@@ -29,7 +29,7 @@ function typeOfPhotoDisplay(options){
     if (options.photo !== null){
       display = <Photo photo = {options.photo} alt = {"uh oh i brokesy"} height = {1} width = {1}/>
     }else{
-      display = createPhotosIndex(options.data,options.func)
+      display = createPhotosIndex(options.data, options.func)
     }
     return (
       <div className = "photocontainer" style = {{position: "absolute", zIndex: -1,height: 500, width: 800}}>

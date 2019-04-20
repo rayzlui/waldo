@@ -107,21 +107,16 @@ app.post("/",(req,res)=>{
       newtags.concat(copy)
       photo.tags = newtags
       photo.save(function(err){
-      if (err){
-        console.log("Unable to save tags to photo")
-      }else{
-        console.log("Sucess save to photo")
-      }
-    })
-   }
+        if (err){
+          console.log("Unable to save tags to photo")
+        }else{
+          console.log("Sucess save to photo")
+        }
+      })
+    }
  })
 
-
-
-
 })
-
-
 
 
 app.get("/tags/:id",(req,res)=>{

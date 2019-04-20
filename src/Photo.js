@@ -6,11 +6,6 @@ import './index.css';
 class Photo extends React.Component{
 //photoDOM only deals with the DOM stuff, we'll have an actual photo
 //class that will break down the info from the database (namely the photourl and tags)
-  constructor(props){
-    super(props)
-    this.selectPhoto = this.selectPhoto.bind(this)
-  }
-
   selectPhoto(){
     this.props.selectPhoto(this.props.id)
   }
@@ -18,7 +13,7 @@ class Photo extends React.Component{
   render(){
     let click = null
     if (this.props.height > 1){
-      click = this.selectPhoto
+      click = this.selectPhoto.bind(this)
     }
 
     return(

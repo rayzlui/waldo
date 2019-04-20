@@ -97,6 +97,7 @@ class App extends Component {
     this.setState({clicked: null, score: score})
   }
 
+  
   render(){
 
     let grid = null
