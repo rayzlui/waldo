@@ -4,14 +4,31 @@ import React from 'react'
 
 function scoreCard(options){
     return (
-      <div className = "scorecard">
-        <h2>Score</h2>
-        <p>{options.score}</p>
-
-        <h4 onClick = {options.tagPhotoStatus}>Tag My Own Names!</h4>
-      </div>
+        <p id = "scorecard">{options.score}</p>
+      
     )
   }
+
+ function changeToTagButton(options){
+   return (
+    <h4 id = "change-tag-button" onClick = {options.tagPhotoStatus}>Tag My Own Names!</h4>
+
+   )
+ } 
+
+ function gameModeHeader(options){
+   return(
+    <div className = "scorecard-change-to-tag-buttons">
+    <div id = "score-card">
+      Score
+      {scoreCard({score: options.score})}
+    </div>
+    <div id = "change-to-tag-button">
+      {changeToTagButton({tagPhotoStatus: options.tagPhotoStatus})}
+    </div>
+  </div>
+   )
+ }
 
 
 function createPhotosIndex(data, func){
@@ -38,4 +55,4 @@ function typeOfPhotoDisplay(options){
     )
   }
 
-export {scoreCard, typeOfPhotoDisplay}
+export {gameModeHeader, typeOfPhotoDisplay, createPhotosIndex, scoreCard, changeToTagButton}

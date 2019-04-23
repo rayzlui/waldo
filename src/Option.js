@@ -18,16 +18,19 @@ class Options extends React.Component{
         //remove id from the wrong options to prevent duplicate correct answer.
     
         let limit = tagKeys.length > 5? 4 : tagKeys.length//
-        let random = Math.floor(Math.random()*(limit))
+        
+        let winningLocation = Math.floor(Math.random()*(limit))
+        //random is
         for (var i = 0; i<=limit;i++){
           //randomKey gets a random id from the tags
     
           //val is true/false. if val == 1, it's the correct option, if val == 0, it's incorrect.
-          if (i===random){
+          if (i===winningLocation){
             tag = this.props.tags[id]
             val = 1
             randomKey = id
           }else{
+            //if it's i is not the winningLocation number (which determines where the correct answer should be placed).
             randomKey = tagKeys.splice(Math.floor((tagKeys.length-1)*Math.random()),1)[0]
             tag = this.props.tags[randomKey]
             val = 0

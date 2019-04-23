@@ -23,6 +23,7 @@ function buildSquare(options){
     let popupbox = null
     let click = options.processClick
     let highlight = null
+    //helpers
     let gridnum = options.gridnum
     let state = options.state
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {scoreCard, typeOfPhotoDisplay} from './PhotoDOM'
+import {gameModeHeader, typeOfPhotoDisplay} from './PhotoDOM'
 import {getData, getTagName, submitTagsToServer} from './DataConnect'
 import GridDOM from './GridDOM'
 import './App.css';
@@ -21,6 +21,8 @@ class App extends Component {
 
 
     }
+
+    this.tagsOfSelectedPhotoFromIndex = this.tagsOfSelectedPhotoFromIndex.bind(this)
   }
 
   processClick(id){
@@ -63,7 +65,7 @@ class App extends Component {
   }
 
 
-  async  selectedPhotoFromIndex(id){
+  async  tagsOfSelectedPhotoFromIndex(id){
     var data = this.state.data[id]
     var selectedPhoto = data.photo
     var tags = data.tags
@@ -97,7 +99,7 @@ class App extends Component {
     this.setState({clicked: null, score: score})
   }
 
-  
+
   render(){
 
     let grid = null
@@ -114,8 +116,9 @@ class App extends Component {
     }
 
     if (this.state.game){
-      score = scoreCard({score: this.state.score, tagPhotoStatus: this.tagPhotoStatus.bind(this)})
-
+      score = gameModeHeader({score: this.state.score, tagPhotoStatus: this.tagPhotoStatus.bind(this) })
+      
+      
     }else{
       game = "TAG"
       storeTags = <button onClick= {()=>submitTagsToServer({photoId: this.state.photoId, tags: this.state.tags})}>Save Tags</button>
@@ -126,17 +129,26 @@ class App extends Component {
     return(
       <div className = "application">
         <h1>{game} THAT POKEMON</h1>
-
-        {score}
-        {button}
-        <div className = "store-tags">
+        <div className = "score-location">
+          {score}
+        </div>
+        <div className = "tag-vs-game-button">
+          {button}
+        </div>
+        <div className = "store-tags-database">
           {storeTags}
         </div>
         
 
         <div className = "main-container" style = {{position: "relative", paddingTop: 80}}>
-          {grid}
-          {typeOfPhotoDisplay({photo:this.state.photo, data:this.state.data, func: this.selectedPhotoFromIndex.bind(this)})}
+          
+          <div className = "grid-location">
+            {grid}
+          </div>
+
+          <div className = "photo-location">
+            {typeOfPhotoDisplay({photo: this.state.photo, data: this.state.data, func: this.tagsOfselectedPhotoFromIndex})}
+          </div>
 
         </div>
 
