@@ -32,6 +32,7 @@ function scoreCard(options){
 
 
 function createPhotosIndex(data, func){
+  
     let display = []
     var photos = data
     for (var i = 0; i < photos.length;i++){
@@ -42,9 +43,10 @@ function createPhotosIndex(data, func){
   }
 
 function typeOfPhotoDisplay(options){
+  
     let display
     if (options.photo !== null){
-      display = <Photo photo = {options.photo} alt = {"uh oh i brokesy"} height = {1} width = {1}/>
+      display = <Photo photo = {options.photo} alt = {"uh oh i brokesy"} selectPhoto = {null} height = {1} width = {1}/>
     }else{
       display = createPhotosIndex(options.data, options.func)
     }

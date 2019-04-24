@@ -4,7 +4,7 @@ import React from 'react'
 
 function needInputBox(options){
     if (options.gridnum === options.state.clicked){
-        return <input type = "text" value = {options.state.newtag} onChange = {options.tagInput} onKeyPress={options.submitTagForPhoto} />
+        return <input id = "input-popup-box" type = "text" value = {options.state.newtag} onChange = {options.tagInput} onKeyPress={options.submitTagForPhoto} />
     }   
     return null
 }
@@ -27,7 +27,7 @@ function buildSquare(options){
     let gridnum = options.gridnum
     let state = options.state
 
-    if (state.game!==null){
+    if (state.game){
         if (state.tags[gridnum] !== undefined){
             //if we are in game mode, we want to highlight divs that have tags for players to click and guess.
             highlight = true

@@ -11,14 +11,12 @@ class Photo extends React.Component{
   }
 
   render(){
-    let click = null
-    if (this.props.height > 1){
-      click = this.selectPhoto.bind(this)
-    }
+    
+    
 
     return(
 
-      <img src = {this.props.photo} alt = {"ohnoesy i broked"} onClick = {click} style = {{height: 500/this.props.height , width: 800/this.props.width, display: "inline-block"}} />
+      <img src = {this.props.photo} alt = {"ohnoesy i broked"} onClick = {this.selectPhoto.bind(this)} style = {{height: 500/this.props.height , width: 800/this.props.width, display: "inline-block"}} />
 
 
 

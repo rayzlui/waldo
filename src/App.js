@@ -26,6 +26,7 @@ class App extends Component {
   }
 
   processClick(id){
+    console.log("Process clicked works")
     this.setState({clicked:id})
   }
 
@@ -41,7 +42,7 @@ class App extends Component {
     this.setState({game: false, clicked: null})
   }
 
-  async componentWillMount(){
+  async componentDidMount(){
     var data = await getData()
 
     if (typeof(data)==='string'){
@@ -65,7 +66,7 @@ class App extends Component {
   }
 
 
-  async  tagsOfSelectedPhotoFromIndex(id){
+  async tagsOfSelectedPhotoFromIndex(id){
     var data = this.state.data[id]
     var selectedPhoto = data.photo
     var tags = data.tags
@@ -122,7 +123,7 @@ class App extends Component {
     }else{
       game = "TAG"
       storeTags = <button onClick= {()=>submitTagsToServer({photoId: this.state.photoId, tags: this.state.tags})}>Save Tags</button>
-      score = <h4 onClick = {this.playGame.bind(this)}>Play Guessing Game </h4>
+      score = <h4 id = "play-game-button" onClick = {this.playGame.bind(this)}>Play Guessing Game </h4>
     }
 
 
@@ -147,7 +148,8 @@ class App extends Component {
           </div>
 
           <div className = "photo-location">
-            {typeOfPhotoDisplay({photo: this.state.photo, data: this.state.data, func: this.tagsOfselectedPhotoFromIndex})}
+            {typeOfPhotoDisplay({photo: this.state.photo, data: this.state.data, func: this.tagsOfSelectedPhotoFromIndex})}
+            
           </div>
 
         </div>
