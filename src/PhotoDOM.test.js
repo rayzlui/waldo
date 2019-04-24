@@ -23,7 +23,6 @@ import { exportAllDeclaration } from '@babel/types';
         var val = 10
         
         const wrapper = shallow(scoreCard({score: val}))
-        console.log(wrapper.find("#scorecard").props())
         var p = wrapper.find("#scorecard").props().children
         expect(p).toEqual(val)
      });
@@ -49,10 +48,12 @@ import { exportAllDeclaration } from '@babel/types';
         var data = [1,2,3,4,5,6]
         var mockFunc = jest.fn()
         const wrapper = createPhotosIndex(data,mockFunc)
-        var rand = Math.floor(Math.random()*data.length)
-        var photoOne = shallow(wrapper[rand])
-        photoOne.simulate('click')
-        expect(mockFunc).toHaveBeenCalled()
+        
+        wrapper.forEach(x=> {
+            var photo = shallow(x)
+            photo.simulate('click')
+        })
+        expect(mockFunc).toHaveBeenCalledTimes(data.length)
      })
 
  })
@@ -61,7 +62,6 @@ import { exportAllDeclaration } from '@babel/types';
      it('should return one photo if options.photo !== null', ()=> {
          const wrapper = shallow(typeOfPhotoDisplay({photo: "yes"}))
          var photos = wrapper.find('Photo')
-         console.log(photos.debug())
          expect(photos.length).toEqual(1)
      })  
 
@@ -69,7 +69,6 @@ import { exportAllDeclaration } from '@babel/types';
         var data = [1,2,3,4,5,6]
         const wrapper = shallow(typeOfPhotoDisplay({photo: null, data: data}))
         var photos = wrapper.find('Photo')
-        console.log(photos.debug())
         expect(photos.length).toEqual(data.length)
     })  
  })

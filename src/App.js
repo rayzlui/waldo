@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {gameModeHeader, typeOfPhotoDisplay} from './PhotoDOM'
 import {getData, getTagName, submitTagsToServer} from './DataConnect'
-import GridDOM from './GridDOM'
+import {GridDOM} from './GridDOM'
 import './App.css';
 
 class App extends Component {

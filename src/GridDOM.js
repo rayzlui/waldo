@@ -4,7 +4,7 @@ import React from 'react'
 
 function needInputBox(options){
     if (options.gridnum === options.state.clicked){
-        return <input type = "text" value = {options.state.newtag} onChange = {options.tagInput} onKeyPress={options.submitTagForPhoto} style ={{opacity:3}}/>
+        return <input type = "text" value = {options.state.newtag} onChange = {options.tagInput} onKeyPress={options.submitTagForPhoto} />
     }   
     return null
 }
@@ -27,19 +27,19 @@ function buildSquare(options){
     let gridnum = options.gridnum
     let state = options.state
 
-    if (state.game){
+    if (state.game!==null){
         if (state.tags[gridnum] !== undefined){
             //if we are in game mode, we want to highlight divs that have tags for players to click and guess.
             highlight = true
-            popupbox = needOptionsBox({gridnum: gridnum, state: state, checkTagForGame: options.checkTagForGame} )
+            popupbox = options.needOptionsBox({gridnum: gridnum, state: state, checkTagForGame: options.checkTagForGame} )
         }else{
             //if there's no tag at the div, we don't want it to be clickable.
             click = null
         }
     }else{
         //if we're not in game, we want grids to be basic grids until clicked for an input box. aka null popupbox null highlight.
-        popupbox = needInputBox({tagInput: options.tagInput, submitTagForPhoto: options.submitTagForPhoto, gridnum: gridnum, state: state})
-
+        popupbox = options.needInputBox({tagInput: options.tagInput, submitTagForPhoto: options.submitTagForPhoto, gridnum: gridnum, state: state})
+        
         //AT THE START NOTHING HAS A PROCESS CLICK EVENT LISTENER BECAUSE NOTHING IS CLICKED AT THE START.
 
     }
@@ -53,7 +53,7 @@ function buildGrid(options){
         var row = []
         for (var j = 0; j < 8; j++){
             var gridnum = (8*i)+j
-            var square = options.func({gridnum: gridnum, state: options.state, processClick: options.processClick, checkTagForGame: options.checkTagForGame, tagInput: options.tagInput, submitTagForPhoto: options.submitTagForPhoto})
+            var square = options.func({needOptionsBox: needOptionsBox, needInputBox: needInputBox, gridnum: gridnum, state: options.state, processClick: options.processClick, checkTagForGame: options.checkTagForGame, tagInput: options.tagInput, submitTagForPhoto: options.submitTagForPhoto})
             row.push(square)
         }
         grid.push(row)
@@ -86,4 +86,4 @@ class GridDOM extends React.Component{
     }
 }
 
-export default GridDOM
+export {GridDOM, needInputBox, needOptionsBox, buildSquare, buildGrid}

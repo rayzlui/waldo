@@ -20,7 +20,6 @@ describe('Grid', () => {
     it ('renders a div with purple border when highlight !== null', () => {
       const component = shallow(<Grid id = {"foo"} highlight ={"true"} popupbox = {null}/>)
       component.find("#foo")
-      console.log("testing here, ", component.find("#foo").props().style.border)
       expect(component.find("#foo").props().style.border).toEqual("1px solid purple")
 
       //use .find

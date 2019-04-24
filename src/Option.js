@@ -17,7 +17,7 @@ class Options extends React.Component{
         tagKeys.splice(tagKeys.indexOf(id),1)
         //remove id from the wrong options to prevent duplicate correct answer.
     
-        let limit = tagKeys.length > 5? 4 : tagKeys.length//
+        let limit = tagKeys.length > 4? 4 : tagKeys.length//
         
         let winningLocation = Math.floor(Math.random()*(limit))
         //random is
