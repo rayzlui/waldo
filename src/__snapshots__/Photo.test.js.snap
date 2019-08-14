@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Photo should display 'ohnoesy i broked' when no prop.photo is entered 1`] = `
+<img
+  alt="ohnoesy i broked"
+  onClick={null}
+  style={
+    Object {
+      "display": "inline-block",
+      "height": NaN,
+      "width": NaN,
+    }
+  }
+/>
+`;
