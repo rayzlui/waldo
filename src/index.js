@@ -5,11 +5,12 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App/>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
+
 
 /*
 We need a backend or at least a database to store the associations for the tags and photo. Could be as simple as
@@ -44,5 +45,10 @@ Goals:
   - Set up MongoDB that stores photo with id and tags.
   - Create functions to send data back.
 */
+
+
+
+
+
 
 serviceWorker.unregister();
