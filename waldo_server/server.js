@@ -1,10 +1,10 @@
-var express = require('express')
-var mongoose = require('mongoose')
+let express = require('express')
+let mongoose = require('mongoose')
 
-var app = express()
-var port = 3001
+let app = express()
+let port = 3001
 
-var mongoDB = 'mongodb://localhost:27017/waldo'
+let mongoDB = 'mongodb://localhost:27017/waldo'
 mongoose.connect(mongoDB ,{useNewUrlParser: true}, function(err){
         if (err) return console.log(err)
          console.log('Database connection successful')
@@ -23,22 +23,22 @@ app.use(express.json());
 app.use(express.urlencoded())
 
 //Schema
-var Schema = mongoose.Schema
+let Schema = mongoose.Schema
 //this is to track for tag ids.
 
-var tagSchema = new Schema({
+let tagSchema = new Schema({
   tag: String,
   photo_id: Array
 })
 
-var photoSchema = new Schema({
+let photoSchema = new Schema({
   key: Number,
   photo: String, //this will be a url LINK to a photo online.
   tags: Array //this will be an array of arrays in format [[div${id}, tag${id}],[]]
 },{collection: "Photos"})
 
-var Photos = mongoose.model("Photos", photoSchema)
-var Taggings = mongoose.model("Taggings", tagSchema)
+let Photos = mongoose.model("Photos", photoSchema)
+let Taggings = mongoose.model("Taggings", tagSchema)
 
 
 
@@ -87,7 +87,7 @@ app.post("/",(req,res)=>{
             }
           })
         }else{
-           var copy = tag.photo_id
+           let copy = tag.photo_id
            copy.push([photoid, tagdiv])
            tag.photo_id = copy
            tag.save()
@@ -103,7 +103,7 @@ app.post("/",(req,res)=>{
      throw (err)
    }else{
      //we will also push the array of [div.id, tag] into the photo db.
-      var copy = photo.tags
+      let copy = photo.tags
       newtags.concat(copy)
       photo.tags = newtags
       photo.save(function(err){
@@ -122,7 +122,7 @@ app.post("/",(req,res)=>{
 app.get("/tags/:id",(req,res)=>{
   //this will be a way to search for photos with a certain tag. work in progess idea
 
-    var id = req.params.id
+    let id = req.params.id
     Taggings.find({_id: id},function(err, data){
         if (err){
           console.log("Unable to find tag.")

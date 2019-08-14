@@ -1,7 +1,7 @@
-var mongoose = require('mongoose')
+let mongoose = require('mongoose')
 
-var Schema = mongoose.Schema
-var tagSchema = new Schema({
+let Schema = mongoose.Schema
+let tagSchema = new Schema({
   tag: String,
   photo_id: Array
 })

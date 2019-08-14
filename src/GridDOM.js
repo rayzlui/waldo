@@ -79,11 +79,11 @@ function buildSquare(options) {
 function buildGrid(options) {
   //Only need to test to make sure grid has 64 objects. Can just mock buildSquare.
   let grid = [];
-  for (var i = 0; i < 8; i++) {
-    var row = [];
-    for (var j = 0; j < 8; j++) {
-      var gridnum = 8 * i + j;
-      var square = options.func({
+  for (let i = 0; i < 8; i++) {
+    let row = [];
+    for (let j = 0; j < 8; j++) {
+      let gridnum = 8 * i + j;
+      let square = options.func({
         needOptionsBox: needOptionsBox,
         needInputBox: needInputBox,
         gridnum: gridnum,

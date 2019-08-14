@@ -29,8 +29,8 @@ function gameModeHeader(options) {
 
 function createPhotosIndex(data, func) {
   let display = [];
-  var photos = data;
-  for (var i = 0; i < photos.length; i++) {
+  let photos = data;
+  for (let i = 0; i < photos.length; i++) {
     //need an click event listener to select photo.
     display.push(
       <Photo

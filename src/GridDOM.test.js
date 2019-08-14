@@ -35,13 +35,13 @@ describe('needInputBox', () => {
     let wrapper = shallow(
       needInputBox({ gridnum: 10, state: { clicked: 10 } }),
     );
-    var input = wrapper.find('input');
+    let input = wrapper.find('input');
     expect(input).not.toEqual(undefined);
   });
 
   it('should pass option functions into input when gridnum === state.clicked', () => {
-    var foo = jest.fn();
-    var bar = jest.fn();
+    let foo = jest.fn();
+    let bar = jest.fn();
     let wrapper = shallow(
       needInputBox({
         gridnum: 11,
@@ -50,7 +50,7 @@ describe('needInputBox', () => {
         submitTagForPhoto: bar,
       }),
     );
-    var input = wrapper.find('input').props();
+    let input = wrapper.find('input').props();
     expect(input.value).toEqual('epsum');
     wrapper.simulate('change', { target: { value: 'loren epsum' } });
     expect(foo).toHaveBeenCalled();
@@ -81,9 +81,9 @@ describe('buildSqaure', () => {
   //we're not testing the needOptions/needInput boxes here
   //we just want to test to make sure each situation gets the right function and correct click + calls.
   it('should return Grid component with popup2 if state.game === null, if popupbox !== null click should not work.', () => {
-    var popup1 = jest.fn(x => 5);
-    var popup2 = jest.fn(x => 3);
-    var mock1 = jest.fn();
+    let popup1 = jest.fn(x => 5);
+    let popup2 = jest.fn(x => 3);
+    let mock1 = jest.fn();
     let wrapper = shallow(
       buildSquare({
         needInputBox: popup2,
@@ -102,9 +102,9 @@ describe('buildSqaure', () => {
   });
 
   it('should return Grid component with popup2 if state.game === null, if popupbox === null click should work.', () => {
-    var popup1 = jest.fn(x => 5);
-    var popup2 = jest.fn(x => null);
-    var mock1 = jest.fn();
+    let popup1 = jest.fn(x => 5);
+    let popup2 = jest.fn(x => null);
+    let mock1 = jest.fn();
     let wrapper = shallow(
       buildSquare({
         needInputBox: popup2,
@@ -121,9 +121,9 @@ describe('buildSqaure', () => {
   });
 
   it('should return Grid component with null popup and null click if state.game !== null && state.tags[gridnum] === undefined', () => {
-    var popup1 = jest.fn(x => 5);
-    var popup2 = jest.fn(x => 3);
-    var mock1 = jest.fn(x => 10);
+    let popup1 = jest.fn(x => 5);
+    let popup2 = jest.fn(x => 3);
+    let mock1 = jest.fn(x => 10);
     let wrapper = shallow(
       buildSquare({
         needInputBox: popup2,
@@ -140,9 +140,9 @@ describe('buildSqaure', () => {
   });
 
   it('should return Grid component with null if state.game !== null && state.tags[gridnum] !== undefined, popup1 !== null', () => {
-    var popup1 = jest.fn(x => 5);
-    var popup2 = jest.fn(x => 3);
-    var mock1 = jest.fn();
+    let popup1 = jest.fn(x => 5);
+    let popup2 = jest.fn(x => 3);
+    let mock1 = jest.fn();
     let wrapper = shallow(
       buildSquare({
         needInputBox: popup2,
@@ -158,9 +158,9 @@ describe('buildSqaure', () => {
   });
 
   it('should return Grid component with null if state.game !== null && state.tags[gridnum] !== undefined, popup1 !== null', () => {
-    var popup1 = jest.fn(x => null);
-    var popup2 = jest.fn(x => 3);
-    var mock1 = jest.fn();
+    let popup1 = jest.fn(x => null);
+    let popup2 = jest.fn(x => 3);
+    let mock1 = jest.fn();
     let wrapper = shallow(
       buildSquare({
         needInputBox: popup2,

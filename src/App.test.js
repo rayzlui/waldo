@@ -20,7 +20,7 @@ it('renders state without any issues', async () => {
   //await console.log(wrapper.debug())
   await wrapper.instance().retrieveData();
   await console.log(wrapper.state());
-  var grid = wrapper.find('#grid-2');
+  let grid = wrapper.find('#grid-2');
   console.log(grid.debug());
 
   //need to run it as function not just a property.

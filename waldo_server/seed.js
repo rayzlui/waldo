@@ -7,11 +7,11 @@
 
 //we're using react, so we're not rendering views
 //we're just working as an api, either giving data or receiving it.
-var mongoose = require('mongoose')
+let mongoose = require('mongoose')
 
 
 
-var mongoDB = 'mongodb://localhost:27017/waldo'
+let mongoDB = 'mongodb://localhost:27017/waldo'
 mongoose.connect(mongoDB ,{useNewUrlParser: true}, function(err){
         if (err) return console.log(err)
          console.log('Database connection successful')
@@ -19,21 +19,21 @@ mongoose.connect(mongoDB ,{useNewUrlParser: true}, function(err){
 
 
 //Schema
-var Schema = mongoose.Schema
+let Schema = mongoose.Schema
 //this is to track for tag ids.
 
 
 
-var photoSchema = new Schema({
+let photoSchema = new Schema({
   key: Number,
   photo: String, //this will be a url LINK to a photo online.
   tags: Array //this will be an array of arrays in format [[div${id}, tag${id}],[]]
 },{collection: "Photos"})
 
-var Photos = mongoose.model("Photos", photoSchema)
+let Photos = mongoose.model("Photos", photoSchema)
 
 
-var testdata = [
+let testdata = [
   {key: 0, photo: "https://thespinoff.co.nz/wp-content/uploads/2019/02/sam-56.jpg", tags: []},
   {key: 1, photo: "https://cdn.vox-cdn.com/thumbor/TV4u64TH6dYwgDus-UVZdRVTuMs=/0x0:1196x672/1200x800/filters:focal(538x185:728x375)/cdn.vox-cdn.com/uploads/chorus_image/image/56499775/Screen_Shot_2017_09_02_at_9.51.09_PM.0.png", tags: []},
   {key: 2, photo: "https://www.muraldecal.com/en/img/fomi030_1-jpg/folder/products-detalle-muestras-grandes/wall-murals-minions.jpg", tags: []}

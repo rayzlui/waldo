@@ -1,8 +1,8 @@
-var mongoose = require('mongoose')
+let mongoose = require('mongoose')
 
-var Schema = mongoose.Schema
+let Schema = mongoose.Schema
 
-var photoSchema = new Schema({
+let photoSchema = new Schema({
   key: Number,
   photo: String, //this will be a url LINK to a photo online.
   tags: Array //this will be an array of arrays in format [[div${id}, tag${id}],[]]
