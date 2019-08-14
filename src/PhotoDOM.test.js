@@ -1,7 +1,10 @@
-import PhotoDOM, { scoreCard, createPhotosIndex, changeToTagButton, typeOfPhotoDisplay} from './photoDOM.js'
-import React from 'react'
-import {shallow} from 'enzyme'
-import { exportAllDeclaration } from '@babel/types';
+import {
+  scoreCard,
+  createPhotosIndex,
+  changeToTagButton,
+  typeOfPhotoDisplay,
+} from './photoDOM.js';
+import { shallow } from 'enzyme';
 
 /*
     gameHeader tests:
@@ -18,57 +21,56 @@ import { exportAllDeclaration } from '@babel/types';
         - check mock in display if option.photo === null
  */
 
- describe("scoreCard", ()=>{
-     it('p has the same value as options.score', ()=>{
-        var val = 10
-        
-        const wrapper = shallow(scoreCard({score: val}))
-        var p = wrapper.find("#scorecard").props().children
-        expect(p).toEqual(val)
-     });
- });
+describe('scoreCard', () => {
+  it('p has the same value as options.score', () => {
+    let val = 10;
 
- describe("changeToTagButton", ()=>{
-     it ('runs a function when clicked', () => {
-         var mockFunction = jest.fn()
-         const wrapper = shallow(changeToTagButton({tagPhotoStatus: mockFunction}))
-         wrapper.find("#change-tag-button").simulate('click')
-         expect(mockFunction).toHaveBeenCalled()
-     })
- })
+    let wrapper = shallow(scoreCard({ score: val }));
+    let p = wrapper.find('#scorecard').props().children;
+    expect(p).toEqual(val);
+  });
+});
 
- describe('createPhotosIndex', ()=> {
-     it('should return an array the same length as the data passed in', ()=>{
-        var data = [1,2,3,4,5,6]
-        const wrapper = createPhotosIndex(data,null)
-        expect(wrapper.length).toEqual(data.length)
-     })
+describe('changeToTagButton', () => {
+  it('runs a function when clicked', () => {
+    let mockFunction = jest.fn();
+    let wrapper = shallow(changeToTagButton({ tagPhotoStatus: mockFunction }));
+    wrapper.find('#change-tag-button').simulate('click');
+    expect(mockFunction).toHaveBeenCalled();
+  });
+});
 
-     it('should run a function when clicked.', ()=>{
-        var data = [1,2,3,4,5,6]
-        var mockFunc = jest.fn()
-        const wrapper = createPhotosIndex(data,mockFunc)
-        
-        wrapper.forEach(x=> {
-            var photo = shallow(x)
-            photo.simulate('click')
-        })
-        expect(mockFunc).toHaveBeenCalledTimes(data.length)
-     })
+describe('createPhotosIndex', () => {
+  it('should return an array the same length as the data passed in', () => {
+    let data = [1, 2, 3, 4, 5, 6];
+    let wrapper = createPhotosIndex(data, null);
+    expect(wrapper.length).toEqual(data.length);
+  });
 
- })
+  it('should run a function when clicked.', () => {
+    let data = [1, 2, 3, 4, 5, 6];
+    let mockFunc = jest.fn();
+    let wrapper = createPhotosIndex(data, mockFunc);
 
- describe('typeOfPhotoDisplay', ()=>{
-     it('should return one photo if options.photo !== null', ()=> {
-         const wrapper = shallow(typeOfPhotoDisplay({photo: "yes"}))
-         var photos = wrapper.find('Photo')
-         expect(photos.length).toEqual(1)
-     })  
+    wrapper.forEach(x => {
+      let photo = shallow(x);
+      photo.simulate('click');
+    });
+    expect(mockFunc).toHaveBeenCalledTimes(data.length);
+  });
+});
 
-     it('should return more than one photo if options.photo == null && options.data > 2', ()=> {
-        var data = [1,2,3,4,5,6]
-        const wrapper = shallow(typeOfPhotoDisplay({photo: null, data: data}))
-        var photos = wrapper.find('Photo')
-        expect(photos.length).toEqual(data.length)
-    })  
- })
+describe('typeOfPhotoDisplay', () => {
+  it('should return one photo if options.photo !== null', () => {
+    let wrapper = shallow(typeOfPhotoDisplay({ photo: 'yes' }));
+    let photos = wrapper.find('Photo');
+    expect(photos.length).toEqual(1);
+  });
+
+  it('should return more than one photo if options.photo == null && options.data > 2', () => {
+    let data = [1, 2, 3, 4, 5, 6];
+    let wrapper = shallow(typeOfPhotoDisplay({ photo: null, data: data }));
+    let photos = wrapper.find('Photo');
+    expect(photos.length).toEqual(data.length);
+  });
+});
