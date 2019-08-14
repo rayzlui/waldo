@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Options should be randomly different each time 1`] = `
+<div
+  style={
+    Object {
+      "backgroundColor": "white",
+      "opacity": 2,
+      "position": "absolute",
+      "zLength": 100,
+    }
+  }
+>
+  <option
+    id={1}
+    key="1"
+    style={
+      Object {
+        "fontSize": 14,
+      }
+    }
+    value={0}
+  >
+    2
+  </option>
+  <option
+    id={3}
+    key="3"
+    style={
+      Object {
+        "fontSize": 14,
+      }
+    }
+    value={1}
+  >
+    4
+  </option>
+  <option
+    id={7}
+    key="7"
+    style={
+      Object {
+        "fontSize": 14,
+      }
+    }
+    value={0}
+  >
+    8
+  </option>
+  <option
+    id={9}
+    key="9"
+    style={
+      Object {
+        "fontSize": 14,
+      }
+    }
+    value={0}
+  >
+    10
+  </option>
+  <option
+    id={5}
+    key="5"
+    style={
+      Object {
+        "fontSize": 14,
+      }
+    }
+    value={0}
+  >
+    6
+  </option>
+</div>
+`;
