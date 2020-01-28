@@ -1,5 +1,7 @@
 let express = require('express');
 let mongoose = require('mongoose');
+let Taggings = require('./taggingModel.js');
+let Photos = require('./photoModel.js');
 
 let app = express();
 let port = 3001;
@@ -24,27 +26,6 @@ app.use(function(req, res, next) {
 
 app.use(express.json());
 app.use(express.urlencoded());
-
-//Schema
-let Schema = mongoose.Schema;
-//this is to track for tag ids.
-
-let tagSchema = new Schema({
-  tag: String,
-  photo_id: Array,
-});
-
-let photoSchema = new Schema(
-  {
-    key: Number,
-    photo: String, //this will be a url LINK to a photo online.
-    tags: Array, //this will be an array of arrays in format [[div${id}, tag${id}],[]]
-  },
-  { collection: 'Photos' },
-);
-
-let Photos = mongoose.model('Photos', photoSchema);
-let Taggings = mongoose.model('Taggings', tagSchema);
 
 //Routes
 app.get('/', function(req, res) {
@@ -81,7 +62,7 @@ app.post('/', (req, res) => {
             photo_id: [[photoid, tagdiv]],
           });
           newtags.push([newTag._id, tagdiv]);
-          newTag.save(function(err) {
+          newTag.save(err => {
             if (err) {
               console.log(`There was an error ${tagname} saving new tag.`);
             } else {
@@ -98,7 +79,7 @@ app.post('/', (req, res) => {
       }
     });
   }
-  Photos.findOne({ key: photoid }, function(err, photo) {
+  Photos.findOne({ key: photoid }, (err, photo) => {
     if (err) {
       //if there's an error that means the database is down.
       throw err;
@@ -119,8 +100,8 @@ app.post('/', (req, res) => {
 });
 
 app.get('/tags/:id', (req, res) => {
-  //this will be a way to search for photos with a certain tag. work in progess idea
-
+  //this isn't meant to be a view page, this only returns the data from Taggings model with the id: id. The id was tied to the a Photo model instance and is then displayed in the photo view. 
+  //idea was to get all taggins, we'll just have to create a tags instance and a view for it. 
   let id = req.params.id;
   Taggings.find({ _id: id }, function(err, data) {
     if (err) {
