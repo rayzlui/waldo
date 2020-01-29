@@ -1,6 +1,6 @@
 import { SUBMIT_TAGS_ERROR, SUBMIT_TAGS_SUCCESS } from '../actions/actionTypes';
 
-export function submitTagReducer(action) {
+export function submitTagsReducer(state = null, action) {
   switch (action.type) {
     case SUBMIT_TAGS_ERROR:
       return false;
