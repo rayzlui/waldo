@@ -39,60 +39,64 @@ app.get('/', function(req, res) {
   });
 });
 
-app.post('/', (req, res) => {
-  let data = req.body;
-  let photoid = data.id;
-  let phototags = data.tags;
-  let newtags = [];
-  for (let x in phototags) {
-    let tagdiv = x;
-    let tagname = phototags[tagdiv];
-    //we want to add an array of [id, div] into the tag database. we want to find that
-    //tag or create one if it doesn't exist. However findoneandupdate requires an update section, in our situation,
-    //we aren't updating with a new array, we're adding to it.
-    Taggings.findOne({ tag: tagname }, function(err, tag) {
-      if (err) {
-        //if we can't find a tag, then we make a new one.
-      } else {
-        //if we find the tag, we'll just push an array of [photoid, div.id] into the photo array of the db.
-        //we need to set tag id to the correct id so we can reference it in the photos update.
-        if (tag === null) {
-          let newTag = new Taggings({
-            tag: tagname,
-            photo_id: [[photoid, tagdiv]],
-          });
-          newtags.push([newTag._id, tagdiv]);
-          newTag.save(err => {
-            if (err) {
-              console.log(`There was an error ${tagname} saving new tag.`);
-            } else {
-              console.log(`Saved ${tagname} successfully`);
-            }
-          });
-        } else {
-          let copy = tag.photo_id;
-          copy.push([photoid, tagdiv]);
-          tag.photo_id = copy;
-          tag.save();
-          newtags.push([tag._id, tagdiv]);
-        }
-      }
-    });
-  }
-  Photos.findOne({ key: photoid }, (err, photo) => {
+app.get('/tags', function(req, res) {
+  //this is the index, we want to send all photos with id's to the front end for the user to "select a photo"
+  Taggings.find({}, function(err, photos) {
     if (err) {
-      //if there's an error that means the database is down.
       throw err;
     } else {
+      res.send(photos);
+    }
+  });
+});
+
+app.post('/', (req, res) => {
+  const { imageId, gridId, value } = req.body;
+  let newTags = [];
+  //we want to add an array of [id, div] into the tag database. we want to find that
+  //tag or create one if it doesn't exist. However findoneandupdate requires an update section, in our situation,
+  //we aren't updating with a new array, we're adding to it.
+  Taggings.findOne({ tag: value }, function(err, tag) {
+    if (tag === null) {
+      let newTag = new Taggings({
+        tag: value,
+        photo_id: [[imageId, gridId]],
+      });
+      newTags = [newTag._id, gridId];
+      newTag.save(err => {
+        if (err) {
+          console.log(`There was an error ${value} saving new tag.`);
+          res.send({ state: 500, message: 'Unable to save' });
+        } else {
+          console.log(`Saved ${value} successfully`);
+          res.send({ state: 200, message: 'Save Successful' });
+        }
+      });
+    } else {
+      let copy = tag.photo_id;
+      copy.push([imageId, gridId]);
+      tag.photo_id = copy;
+      tag.save();
+      newTags = [tag._id, gridId];
+      res.send({ state: 200, message: 'Save Successful' });
+    }
+  });
+  Photos.findOne({ key: imageId }, (err, photo) => {
+    if (err) {
+      //if there's an error that means the database is down.
+      res.send({ status: 505, message: 'Server Down' });
+    } else {
       //we will also push the array of [div.id, tag] into the photo db.
-      let copy = photo.tags;
-      newtags.concat(copy);
-      photo.tags = newtags;
+      let copy = photo.tags.slice();
+      copy.push(newTags);
+      photo.tags = newTags;
       photo.save(function(err) {
         if (err) {
           console.log('Unable to save tags to photo');
+          res.send({ state: 500, message: 'Unable to save' });
         } else {
           console.log('Sucess save to photo');
+          res.send({ state: 200, message: 'Save Successful' });
         }
       });
     }
@@ -100,8 +104,8 @@ app.post('/', (req, res) => {
 });
 
 app.get('/tags/:id', (req, res) => {
-  //this isn't meant to be a view page, this only returns the data from Taggings model with the id: id. The id was tied to the a Photo model instance and is then displayed in the photo view. 
-  //idea was to get all taggins, we'll just have to create a tags instance and a view for it. 
+  //this isn't meant to be a view page, this only returns the data from Taggings model with the id: id. The id was tied to the a Photo model instance and is then displayed in the photo view.
+  //idea was to get all taggins, we'll just have to create a tags instance and a view for it.
   let id = req.params.id;
   Taggings.find({ _id: id }, function(err, data) {
     if (err) {
