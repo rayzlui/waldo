@@ -8,41 +8,84 @@ import {
   SUBMIT_TAGS_ERROR,
   FETCH_IMAGE_SUCCESS,
   FETCH_TAG_SUCCESS,
-} from './typeTypes';
+  TOGGLE_MODE,
+  SELECT_IMAGE,
+  UPDATE_SCORE,
+  RESET_SCORE,
+  RESET_GRID,
+  CHANGE_GRID,
+} from './actionTypes';
 
 export function retrieveImageIndex() {
   return async function getImages(dispatch) {
     dispatch(startImageFetch());
-    let response = await fetch('http://localhost:3001', { mode: 'cors' });
-    if (response.status === 200) {
-      let data = await response.json();
-      dispatch(imageFetchSuccess(data));
-    } else {
-      const { status, statusText, url } = response;
-      const errorInfo = { status, statusText, url };
-      dispatch(imageFetchError(errorInfo));
-    }
+    await fetch('http://localhost:3001', { mode: 'cors' })
+      .then(async function(response) {
+        if (response.status === 200) {
+          let data = await response.json();
+          await dispatch(imageFetchSuccess(data));
+        } else {
+          const { status, statusText, url } = response;
+          const errorInfo = { status, statusText, url };
+          dispatch(imageFetchError(errorInfo));
+        }
+      })
+      .catch(error => {
+        dispatch(imageFetchError(error));
+      });
   };
 }
 
-export function retrieveTags(id) {
+export function retrieveAllTags() {
+  return async function allDemTags(dispatch) {
+    dispatch(startTagFetch());
+    await fetch('http://localhost:3001/tags', { mode: 'cors' })
+      .then(async function(response) {
+        if (response.status === 200) {
+          let data = await response.json();
+          await dispatch(tagFetchSuccess(data));
+        } else {
+          const { status, statusText, url } = response;
+          const errorInfo = { status, statusText, url };
+          dispatch(tagFetchError(errorInfo));
+        }
+      })
+      .catch(error => {
+        dispatch(tagFetchError(error));
+      });
+  };
+}
+
+export function retrieveSpecificTags(array) {
   return async function getTagName(dispatch) {
     dispatch(startTagFetch());
-    let response = await fetch(`http://localhost:3001/tags/${id}`, {
-      mode: 'cors',
-    });
-    if (response.status === 200) {
-      let tags = await response.json();
-      dispatch(tagFetchSuccess(tags));
-    } else {
-      const { status, statusText, url } = response;
-      const errorInfo = { status, statusText, url };
-      dispatch(tagFetchError(errorInfo));
+    let allTags = {};
+    for (let i = 0; i < array.length; i++) {
+      let id = array[i][0];
+      let key = array[i][1];
+      await fetch(`http://localhost:3001/tags/${id}`, {
+        mode: 'cors',
+      })
+        .then(async function(response) {
+          if (response.status === 200) {
+            let tags = await response.json();
+            allTags[key] = tags[0].tag;
+          } else {
+            const { status, statusText, url } = response;
+            const errorInfo = { status, statusText, url };
+            dispatch(tagFetchError(errorInfo));
+          }
+        })
+        .catch(function(error) {
+          dispatch(tagFetchError(error));
+        });
     }
+    dispatch(tagFetchSuccess(allTags));
   };
 }
 
 export function postTags(options) {
+  const { imageId, gridId, value } = options;
   return async function submitTagsToServer(dispatch) {
     dispatch(submitTags());
     let response = fetch('http://localhost:3001', {
@@ -51,8 +94,9 @@ export function postTags(options) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        id: options.photoId,
-        tags: options.tags,
+        imageId: imageId,
+        gridId: gridId,
+        value: value,
       }),
     });
     if (response.status === 200) {
@@ -63,6 +107,30 @@ export function postTags(options) {
       dispatch(submitError(errorInfo));
     }
   };
+}
+
+export function resetGrid() {
+  return { type: RESET_GRID };
+}
+
+export function changeGrid(id) {
+  return { type: CHANGE_GRID, gridId: id };
+}
+
+export function toggleMode() {
+  return { type: TOGGLE_MODE };
+}
+
+export function updateScore() {
+  return { type: UPDATE_SCORE };
+}
+
+export function resetScore() {
+  return { type: RESET_SCORE };
+}
+
+export function selectImage(data) {
+  return { type: SELECT_IMAGE, data: data };
 }
 
 export function startImageFetch() {
