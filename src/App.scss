@@ -1,0 +1,129 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+
+.tag__save__header {
+  position: fixed;
+  top:0;
+  background-color: white;
+}
+
+.container {
+  height: 100vh;
+  width: 100vw;
+  text-align: center;
+}
+
+.error{
+  color: red;
+  font-size: 4vw;;
+}
+
+.success {
+  color: green;
+  font-size: 2vw;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.select__index{
+  height: 18vw;
+  width: 24vw;
+}
+
+.image__index{
+  height: 40vw;
+  width: 24vw;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+.menu__section {
+  width: 25vw;
+  display: inline-block;
+}
+
+.selected__image{
+  width: 75vw;
+  display: inline-block;
+  img {
+    width: 75vw;
+  }
+  .grid__container {
+    width: 75vw;
+    position: absolute;
+    z-index: 2;
+  }
+}
+.popupBox-false{
+  visibility: hidden;
+}
+
+
+.popupBox-true{
+  visibility: visible;
+  border: 1px solid green;
+}
+h3 {
+  font-size: 2vw;
+}
+h2 {
+  font-size: 3.3vw;
+}
+
+h1{
+  font-size: 4vw;
+}
+
+h4 {
+  font-size: 1.7vw;
+}
+p{
+  font-size: 1.3vw;
+}
+h1,h2,h3,h4,h5,h6,p{
+  margin: 0;
+  padding: 0;
+}
+.grid{
+  display: inline-block;
+  grid-gap: 0;
+  position: relative;
+  z-index: 0;
+  height: 50/8+vw;
+  width: 75/8+vw;
+};
+
+.messages {
+  position: relative;
+  top: 0;
+}
