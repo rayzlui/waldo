@@ -14,6 +14,9 @@ import {
   RESET_SCORE,
   RESET_GRID,
   CHANGE_GRID,
+  RESET_ERROR,
+  VIEW_TAGS,
+  VIEW_IMAGE,
 } from './actionTypes';
 
 export function retrieveImageIndex() {
@@ -88,7 +91,7 @@ export function postTags(options) {
   const { imageId, gridId, value } = options;
   return async function submitTagsToServer(dispatch) {
     dispatch(submitTags());
-    let response = fetch('http://localhost:3001', {
+    await fetch('http://localhost:3001', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -98,14 +101,19 @@ export function postTags(options) {
         gridId: gridId,
         value: value,
       }),
-    });
-    if (response.status === 200) {
-      dispatch(submitSuccess());
-    } else {
-      const { status, statusText, url } = response;
-      const errorInfo = { status, statusText, url };
-      dispatch(submitError(errorInfo));
-    }
+    })
+      .then(response => {
+        if (response.status === 200) {
+          dispatch(submitSuccess());
+        } else {
+          const { status, statusText, url } = response;
+          const errorInfo = { status, statusText, url };
+          dispatch(submitError(errorInfo));
+        }
+      })
+      .catch(error => {
+        dispatch(submitError(error));
+      });
   };
 }
 
@@ -127,6 +135,10 @@ export function updateScore() {
 
 export function resetScore() {
   return { type: RESET_SCORE };
+}
+
+export function resetError() {
+  return { type: RESET_ERROR };
 }
 
 export function selectImage(data) {
@@ -167,4 +179,12 @@ export function submitSuccess() {
 
 export function submitError(err) {
   return { type: SUBMIT_TAGS_ERROR, err: err };
+}
+
+export function viewTags() {
+  return { type: VIEW_TAGS };
+}
+
+export function viewImage() {
+  return { type: VIEW_IMAGE };
 }
