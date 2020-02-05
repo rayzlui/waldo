@@ -17,4 +17,5 @@ export const rootReducer = combineReducers({
   isTagMode: isTagModeReducer,
   gameScore: gameScoreReducer,
   currentGrid: currentGridReducer,
+  isViewingTags: isTagModeReducer,
 });
