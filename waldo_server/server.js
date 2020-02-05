@@ -66,10 +66,9 @@ app.post('/', (req, res) => {
       newTag.save(err => {
         if (err) {
           console.log(`There was an error ${value} saving new tag.`);
-          res.send({ state: 500, message: 'Unable to save' });
+          res.send(err);
         } else {
           console.log(`Saved ${value} successfully`);
-          res.send({ state: 200, message: 'Save Successful' });
         }
       });
     } else {
@@ -78,7 +77,6 @@ app.post('/', (req, res) => {
       tag.photo_id = copy;
       tag.save();
       newTags = [tag._id, gridId];
-      res.send({ state: 200, message: 'Save Successful' });
     }
   });
   Photos.findOne({ key: imageId }, (err, photo) => {
@@ -93,14 +91,14 @@ app.post('/', (req, res) => {
       photo.save(function(err) {
         if (err) {
           console.log('Unable to save tags to photo');
-          res.send({ state: 500, message: 'Unable to save' });
+          res.send(err)
         } else {
           console.log('Sucess save to photo');
-          res.send({ state: 200, message: 'Save Successful' });
         }
       });
     }
   });
+  res.send('ok');
 });
 
 app.get('/tags/:id', (req, res) => {
