@@ -13,3 +13,6 @@ export const UPDATE_SCORE = 'UPDATE_SCORE';
 export const RESET_SCORE = 'RESET_SCORE';
 export const CHANGE_GRID = 'CHANGE_GRID';
 export const RESET_GRID = 'RESET_GRID';
+export const RESET_ERROR = 'RESET_ERROR';
+export const VIEW_IMAGE = 'VIEW_IMAGE';
+export const VIEW_TAGS = 'VIEW_TAGS';
