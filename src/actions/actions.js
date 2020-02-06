@@ -17,6 +17,8 @@ import {
   RESET_ERROR,
   VIEW_TAGS,
   VIEW_IMAGE,
+  SEARCH_TAG_NAME,
+  RESET_TAG_SEARCH,
 } from './actionTypes';
 
 export function retrieveImageIndex() {
@@ -187,4 +189,11 @@ export function viewTags() {
 
 export function viewImage() {
   return { type: VIEW_IMAGE };
+}
+
+export function resetTagSearch() {
+  return { type: RESET_TAG_SEARCH };
+}
+export function searchTagNames(tag) {
+  return { type: SEARCH_TAG_NAME, tag: tag };
 }
