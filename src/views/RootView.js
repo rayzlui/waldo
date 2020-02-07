@@ -8,9 +8,10 @@ import { SaveTagContainer } from '../containers/SaveTagContainer';
 import { ImageViewDisplay } from './ImageViewDisplay';
 import { TagViewsContainer } from '../containers/TagsViewContainer';
 import { TagSearchBarContainer } from '../containers/TagSearchBarContainer';
+import { ViewTagsButtonContainer } from '../containers/ViewTagsButtonContainer';
 
 export function RootView(props) {
-  const { resetGrid, isViewingTags, viewAllTags } = props;
+  const { resetGrid, isViewingTags } = props;
   return (
     <div className="container">
       <section className="messages">
@@ -24,9 +25,7 @@ export function RootView(props) {
         </header>
 
         <TagSearchBarContainer />
-        <button onClick={() => viewAllTags(isViewingTags)}>
-          {!isViewingTags ? 'View Tags' : 'View Images'}
-        </button>
+        <ViewTagsButtonContainer />
         <ChangeButtonContainer />
         <ImageIndexContainer />
       </section>
