@@ -1,9 +1,4 @@
-import {
-  resetGrid,
-  viewTags,
-  resetTagSearch,
-  viewImage,
-} from '../actions/actions';
+import { resetGrid } from '../actions/actions';
 import { connect } from 'react-redux';
 import { RootView } from '../views/RootView';
 
@@ -16,14 +11,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     resetGrid: () => dispatch(resetGrid()),
-    viewAllTags: isViewing => {
-      if (!isViewing) {
-        dispatch(viewTags());
-        dispatch(resetTagSearch());
-      } else {
-        dispatch(viewImage());
-      }
-    },
   };
 }
 
