@@ -19,6 +19,7 @@ import {
   VIEW_IMAGE,
   SEARCH_TAG_NAME,
   RESET_TAG_SEARCH,
+  SAVING_IMAGE_START,
 } from './actionTypes';
 
 export function retrieveImageIndex() {
@@ -93,7 +94,7 @@ export function postTags(options) {
   const { imageId, gridId, value } = options;
   return async function submitTagsToServer(dispatch) {
     dispatch(submitTags());
-    await fetch('http://localhost:3001', {
+    await fetch('http://localhost:3001/tag', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -117,6 +118,37 @@ export function postTags(options) {
         dispatch(submitError(error));
       });
   };
+}
+
+export function submitNewImage(key, url) {
+  return async function submitImageToServer(dispatch) {
+    await fetch('http://localhost:3001/photo', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        key: key,
+        newUrl: url,
+      }),
+    })
+      .then(response => {
+        if (response.status === 200) {
+          dispatch(submitSuccess());
+        } else {
+          const { status, statusText, url } = response;
+          const errorInfo = { status, statusText, url };
+          dispatch(submitError(errorInfo));
+        }
+      })
+      .catch(error => {
+        dispatch(submitError(error));
+      });
+  };
+}
+
+export function savingImageStart() {
+  return { type: SAVING_IMAGE_START };
 }
 
 export function resetGrid() {
