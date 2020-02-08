@@ -18,3 +18,4 @@ export const VIEW_IMAGE = 'VIEW_IMAGE';
 export const VIEW_TAGS = 'VIEW_TAGS';
 export const SEARCH_TAG_NAME = 'SEARCH_TAG_NAME';
 export const RESET_TAG_SEARCH = 'RESET_TAG_SEARCH';
+export const SAVING_IMAGE_START = 'SAVING_IMAGE_START';
