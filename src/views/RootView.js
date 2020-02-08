@@ -9,6 +9,7 @@ import { ImageViewDisplay } from './ImageViewDisplay';
 import { TagViewsContainer } from '../containers/TagsViewContainer';
 import { TagSearchBarContainer } from '../containers/TagSearchBarContainer';
 import { ViewTagsButtonContainer } from '../containers/ViewTagsButtonContainer';
+import { NewImageContainer } from '../containers/NewImageContainer';
 
 export function RootView(props) {
   const { resetGrid, isViewingTags } = props;
@@ -23,7 +24,7 @@ export function RootView(props) {
         <header>
           <HeaderContainer />
         </header>
-
+        <NewImageContainer />
         <TagSearchBarContainer />
         <ViewTagsButtonContainer />
         <ChangeButtonContainer />
