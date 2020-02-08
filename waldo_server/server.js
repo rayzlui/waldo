@@ -50,7 +50,30 @@ app.get('/tags', function(req, res) {
   });
 });
 
-app.post('/', (req, res) => {
+app.post('/photo', (req, res) => {
+  const { key, newUrl } = req.body;
+  Photos.findOne({ photo: newUrl }, (err, url) => {
+    if (url === null) {
+      let newPhoto = new Photos({
+        key: key,
+        photo: newUrl,
+        tags: [],
+      });
+      newPhoto.save(err => {
+        if (err) {
+          console.log(`${err} unable to save`);
+        } else {
+          console.log(`YAYYY SAVED!`);
+        }
+      });
+      res.send('Okay')
+    } else {
+      res.send('Error');
+    }
+  });
+});
+
+app.post('/tag', (req, res) => {
   const { imageId, gridId, value } = req.body;
   let newTags = [];
   //we want to add an array of [id, div] into the tag database. we want to find that
@@ -91,7 +114,7 @@ app.post('/', (req, res) => {
       photo.save(function(err) {
         if (err) {
           console.log('Unable to save tags to photo');
-          res.send(err)
+          res.send(err);
         } else {
           console.log('Sucess save to photo');
         }
