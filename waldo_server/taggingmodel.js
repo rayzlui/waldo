@@ -5,5 +5,4 @@ let tagSchema = new Schema({
   tag: String,
   photo_id: Array,
 });
-
-module.export = mongoose.model('Taggings', tagSchema);
+module.exports = mongoose.model('Taggings', tagSchema);

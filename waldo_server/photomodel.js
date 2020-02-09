@@ -11,4 +11,4 @@ let photoSchema = new Schema(
   { collection: 'Photos' },
 );
 
-module.export = mongoose.model('Photos', photoSchema);
+module.exports = mongoose.model('Photos', photoSchema);

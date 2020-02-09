@@ -7,16 +7,18 @@
 
 //we're using react, so we're not rendering views
 //we're just working as an api, either giving data or receiving it.
-let mongoose = require('mongoose');
+import { connect, Schema, model } from 'mongoose';
 
 let mongoDB = 'mongodb://localhost:27017/waldo';
-mongoose.connect(mongoDB, { useNewUrlParser: true }, function(err) {
-  if (err) return console.log(err);
-  console.log('Database connection successful');
-});
+connect(
+  mongoDB,
+  { useNewUrlParser: true },
+  function(err) {
+    if (err) return console.log(err);
+    console.log('Database connection successful');
+  },
+);
 
-//Schema
-let Schema = mongoose.Schema;
 //this is to track for tag ids.
 
 let photoSchema = new Schema(
@@ -28,7 +30,7 @@ let photoSchema = new Schema(
   { collection: 'Photos' },
 );
 
-let Photos = mongoose.model('Photos', photoSchema);
+let Photos = model('Photos', photoSchema);
 
 let testdata = [
   {
