@@ -20,6 +20,7 @@ import {
   SEARCH_TAG_NAME,
   RESET_TAG_SEARCH,
   SAVING_IMAGE_START,
+  UPDATE_SUCCESS,
 } from './actionTypes';
 
 export function retrieveImageIndex() {
@@ -145,6 +146,40 @@ export function submitNewImage(key, url) {
         dispatch(submitError(error));
       });
   };
+}
+
+export function editImage(options) {
+  const { id, url } = options;
+  return async function submitImageToServer(dispatch) {
+    await fetch(`http://localhost:3001/photo/${id}`, {
+      method: 'put',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        newUrl: url,
+      }),
+    })
+      .then(async response => {
+        if (response.status === 200) {
+          let data = await response.json();
+          dispatch(updateSuccess(data));
+          dispatch(retrieveImageIndex());
+          dispatch(retrieveAllTags());
+        } else {
+          const { status, statusText, url } = response;
+          const errorInfo = { status, statusText, url };
+          dispatch(submitError(errorInfo));
+        }
+      })
+      .catch(error => {
+        dispatch(submitError(error));
+      });
+  };
+}
+
+export function updateSuccess(data) {
+  return { type: UPDATE_SUCCESS, data: data };
 }
 
 export function savingImageStart() {
