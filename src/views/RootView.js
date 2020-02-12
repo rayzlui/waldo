@@ -10,6 +10,8 @@ import { TagViewsContainer } from '../containers/TagsViewContainer';
 import { TagSearchBarContainer } from '../containers/TagSearchBarContainer';
 import { ViewTagsButtonContainer } from '../containers/ViewTagsButtonContainer';
 import { NewImageContainer } from '../containers/NewImageContainer';
+import { EditImageContainer } from '../containers/EditImageContainer';
+import { DeleteImageButton } from './DeleteImageView';
 
 export function RootView(props) {
   const { resetGrid, isViewingTags } = props;
@@ -20,7 +22,7 @@ export function RootView(props) {
         <NetworkErrorContainer />
       </section>
 
-      <section className="menu__section" onClick={() => resetGrid()}>
+      <section className="menu__section" onClick={() => null}>
         <header>
           <HeaderContainer />
         </header>
@@ -30,7 +32,8 @@ export function RootView(props) {
         <ChangeButtonContainer />
         <ImageIndexContainer />
       </section>
-
+      <EditImageContainer />
+      <DeleteImageButton />
       <ImageViewDisplay isViewingTags={isViewingTags} />
       <TagViewsContainer />
     </div>
