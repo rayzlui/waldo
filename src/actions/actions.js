@@ -178,6 +178,28 @@ export function editImage(options) {
   };
 }
 
+export function deleteImage(id) {
+  return async function deleteThisImage(dispatch) {
+    await fetch(`http://localhost:3001/photo/${id}`, {
+      method: 'delete',
+    })
+      .then(response => {
+        if (response.status === 200) {
+          dispatch(updateSuccess(null));
+          dispatch(retrieveImageIndex());
+          dispatch(retrieveAllTags());
+        } else {
+          const { status, statusText, url } = response;
+          const errorInfo = { status, statusText, url };
+          dispatch(submitError(errorInfo));
+        }
+      })
+      .catch(error => {
+        dispatch(submitError(error));
+      });
+  };
+}
+
 export function updateSuccess(data) {
   return { type: UPDATE_SUCCESS, data: data };
 }
