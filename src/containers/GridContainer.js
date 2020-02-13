@@ -13,7 +13,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     changeGrid: gridId => dispatch(changeGrid(gridId)),
-    resetGrid: () => dispatch(resetGrid()),
+    resetGrid: resetGrid,
   };
 }
 
