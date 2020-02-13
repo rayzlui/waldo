@@ -12,12 +12,10 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    updateScore: () => dispatch(updateScore()),
-    resetGrid: () => dispatch(resetGrid()),
-  };
-}
+const mapDispatchToProps = {
+  updateScore: updateScore,
+  resetGrid: resetGrid,
+};
 
 export const OptionsContainer = connect(
   mapStateToProps,
