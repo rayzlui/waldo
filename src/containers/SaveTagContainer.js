@@ -6,9 +6,7 @@ function mapStateToProps(state) {
   return { submitError: state.submitError };
 }
 
-function mapDispatchToState(dispatch) {
-  return { resetError: () => dispatch(resetError()) };
-}
+const mapDispatchToState = { resetError: resetError };
 
 export const SaveTagContainer = connect(
   mapStateToProps,
