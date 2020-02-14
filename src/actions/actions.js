@@ -124,28 +124,27 @@ export function postTags(options) {
 
 export function submitNewImage(key, url) {
   return async function submitImageToServer(dispatch) {
-    await fetch('http://localhost:3001/photo', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        key: key,
-        newUrl: url,
-      }),
-    })
-      .then(response => {
-        if (response.status === 200) {
-          dispatch(submitSuccess());
-        } else {
-          const { status, statusText, url } = response;
-          const errorInfo = { status, statusText, url };
-          dispatch(submitError(errorInfo));
-        }
-      })
-      .catch(error => {
-        dispatch(submitError(error));
+    try {
+      let response = await fetch('http://localhost:3001/photo', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          key: key,
+          newUrl: url,
+        }),
       });
+      if (response.status === 200) {
+        dispatch(submitSuccess());
+      } else {
+        const { status, statusText, url } = response;
+        const errorInfo = { status, statusText, url };
+        dispatch(submitError(errorInfo));
+      }
+    } catch (error) {
+      dispatch(submitError(error));
+    }
   };
 }
 
