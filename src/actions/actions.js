@@ -96,29 +96,29 @@ export function postTags(options) {
   const { imageId, gridId, value } = options;
   return async function submitTagsToServer(dispatch) {
     dispatch(submitTags());
-    await fetch('http://localhost:3001/tag', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        imageId: imageId,
-        gridId: gridId,
-        value: value,
-      }),
-    })
-      .then(response => {
-        if (response.status === 200) {
-          dispatch(submitSuccess());
-        } else {
-          const { status, statusText, url } = response;
-          const errorInfo = { status, statusText, url };
-          dispatch(submitError(errorInfo));
-        }
-      })
-      .catch(error => {
-        dispatch(submitError(error));
+    try {
+      let response = await fetch('http://localhost:3001/tag', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          imageId: imageId,
+          gridId: gridId,
+          value: value,
+        }),
       });
+
+      if (response.status === 200) {
+        dispatch(submitSuccess());
+      } else {
+        const { status, statusText, url } = response;
+        const errorInfo = { status, statusText, url };
+        dispatch(submitError(errorInfo));
+      }
+    } catch (error) {
+      dispatch(submitError(error));
+    }
   };
 }
 
