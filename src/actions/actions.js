@@ -26,20 +26,20 @@ import {
 export function retrieveImageIndex() {
   return async function getImages(dispatch) {
     dispatch(startImageFetch());
-    await fetch('http://localhost:3001', { mode: 'cors' })
-      .then(async function(response) {
-        if (response.status === 200) {
-          let data = await response.json();
-          await dispatch(imageFetchSuccess(data));
-        } else {
-          const { status, statusText, url } = response;
-          const errorInfo = { status, statusText, url };
-          dispatch(imageFetchError(errorInfo));
-        }
-      })
-      .catch(error => {
-        dispatch(imageFetchError(error));
-      });
+    try {
+      let response = await fetch('http://localhost:3001', { mode: 'cors' });
+
+      if (response.status === 200) {
+        let data = await response.json();
+        await dispatch(imageFetchSuccess(data));
+      } else {
+        const { status, statusText, url } = response;
+        const errorInfo = { status, statusText, url };
+        dispatch(imageFetchError(errorInfo));
+      }
+    } catch (error) {
+      dispatch(imageFetchError(error));
+    }
   };
 }
 
