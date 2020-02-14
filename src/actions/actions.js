@@ -151,30 +151,30 @@ export function submitNewImage(key, url) {
 export function editImage(options) {
   const { id, url } = options;
   return async function submitImageToServer(dispatch) {
-    await fetch(`http://localhost:3001/photo/${id}`, {
-      method: 'put',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        newUrl: url,
-      }),
-    })
-      .then(async response => {
-        if (response.status === 200) {
-          let data = await response.json();
-          dispatch(updateSuccess(data));
-          dispatch(retrieveImageIndex());
-          dispatch(retrieveAllTags());
-        } else {
-          const { status, statusText, url } = response;
-          const errorInfo = { status, statusText, url };
-          dispatch(submitError(errorInfo));
-        }
-      })
-      .catch(error => {
-        dispatch(submitError(error));
+    try {
+      let response = await fetch(`http://localhost:3001/photo/${id}`, {
+        method: 'put',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          newUrl: url,
+        }),
       });
+
+      if (response.status === 200) {
+        let data = await response.json();
+        dispatch(updateSuccess(data));
+        dispatch(retrieveImageIndex());
+        dispatch(retrieveAllTags());
+      } else {
+        const { status, statusText, url } = response;
+        const errorInfo = { status, statusText, url };
+        dispatch(submitError(errorInfo));
+      }
+    } catch (error) {
+      dispatch(submitError(error));
+    }
   };
 }
 
