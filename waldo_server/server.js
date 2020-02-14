@@ -17,6 +17,7 @@ app.use(function(req, res, next) {
   //we need to CORS to allow more than one type of headers, in this
   //situation we needed it to accept content-type for post, so we could set it in the front end.
   res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', '*');
   res.header(
     'Access-Control-Allow-Headers',
     ' X-Requested-With, Origin, Content-Type, Accept',
@@ -66,9 +67,30 @@ app.post('/photo', (req, res) => {
           console.log(`YAYYY SAVED!`);
         }
       });
-      res.send('Okay')
+      res.send('Okay');
     } else {
       res.send('Error');
+    }
+  });
+});
+
+app.put('/photo/:id', (req, res) => {
+  const { newUrl } = req.body;
+  const id = req.params.id;
+  Photos.findOne({ _id: id }, (err, image) => {
+    if (image === null) {
+      throw err;
+    } else {
+      image.photo = newUrl;
+      image.save(err => {
+        if (err) {
+          console.log(err);
+          res.send(err);
+        } else {
+          console.log(`Updated ${id}`);
+          res.json(image);
+        }
+      });
     }
   });
 });

@@ -8,11 +8,9 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    resetGrid: () => dispatch(resetGrid()),
-  };
-}
+const mapDispatchToProps = {
+  resetGrid: resetGrid,
+};
 
 export const RootContainer = connect(
   mapStateToProps,

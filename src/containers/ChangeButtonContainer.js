@@ -8,11 +8,9 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    changeGameMode: () => dispatch(toggleMode()),
-  };
-}
+const mapDispatchToProps = {
+  changeGameMode: toggleMode,
+};
 
 export const ChangeButtonContainer = connect(
   mapStateToProps,

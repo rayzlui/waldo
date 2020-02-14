@@ -26,7 +26,7 @@ export function Grid(props) {
 export default Grid;
 
 Grid.propTypes = {
-  gridId: PropTypes.string,
+  gridId: PropTypes.number,
   currentGrid: PropTypes.number,
   currentImage: PropTypes.object,
   changeGrid: PropTypes.func,

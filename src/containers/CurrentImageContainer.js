@@ -7,17 +7,4 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch, ownProps) {
-  let { selectImage } = ownProps;
-  if (!selectImage) {
-    selectImage = () => null;
-  }
-  return {
-    selectImage: selectImage,
-  };
-}
-
-export const CurrentImageContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(CurrentImage);
+export const CurrentImageContainer = connect(mapStateToProps)(CurrentImage);

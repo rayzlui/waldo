@@ -7,10 +7,6 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return null;
-}
-
 export const HeaderContainer = connect(
   mapStateToProps,
   null,

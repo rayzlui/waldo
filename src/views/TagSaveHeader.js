@@ -16,6 +16,6 @@ export function TagSaveHeader(props) {
 }
 
 TagSaveHeader.propTypes = {
-  submitError: PropTypes.string,
+  submitError: PropTypes.bool,
   resetError: PropTypes.func,
 };

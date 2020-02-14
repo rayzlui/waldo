@@ -20,45 +20,48 @@ import {
   SEARCH_TAG_NAME,
   RESET_TAG_SEARCH,
   SAVING_IMAGE_START,
+  UPDATE_SUCCESS,
 } from './actionTypes';
 
 export function retrieveImageIndex() {
   return async function getImages(dispatch) {
     dispatch(startImageFetch());
-    await fetch('http://localhost:3001', { mode: 'cors' })
-      .then(async function(response) {
-        if (response.status === 200) {
-          let data = await response.json();
-          await dispatch(imageFetchSuccess(data));
-        } else {
-          const { status, statusText, url } = response;
-          const errorInfo = { status, statusText, url };
-          dispatch(imageFetchError(errorInfo));
-        }
-      })
-      .catch(error => {
-        dispatch(imageFetchError(error));
-      });
+    try {
+      let response = await fetch('http://localhost:3001', { mode: 'cors' });
+
+      if (response.status === 200) {
+        let data = await response.json();
+        await dispatch(imageFetchSuccess(data));
+      } else {
+        const { status, statusText, url } = response;
+        const errorInfo = { status, statusText, url };
+        dispatch(imageFetchError(errorInfo));
+      }
+    } catch (error) {
+      dispatch(imageFetchError(error));
+    }
   };
 }
 
 export function retrieveAllTags() {
   return async function allDemTags(dispatch) {
     dispatch(startTagFetch());
-    await fetch('http://localhost:3001/tags', { mode: 'cors' })
-      .then(async function(response) {
-        if (response.status === 200) {
-          let data = await response.json();
-          await dispatch(tagFetchSuccess(data));
-        } else {
-          const { status, statusText, url } = response;
-          const errorInfo = { status, statusText, url };
-          dispatch(tagFetchError(errorInfo));
-        }
-      })
-      .catch(error => {
-        dispatch(tagFetchError(error));
+
+    try {
+      let response = await fetch('http://localhost:3001/tags', {
+        mode: 'cors',
       });
+      if (response.status === 200) {
+        let data = await response.json();
+        await dispatch(tagFetchSuccess(data));
+      } else {
+        const { status, statusText, url } = response;
+        const errorInfo = { status, statusText, url };
+        dispatch(tagFetchError(errorInfo));
+      }
+    } catch (error) {
+      dispatch(tagFetchError(error));
+    }
   };
 }
 
@@ -69,22 +72,21 @@ export function retrieveSpecificTags(array) {
     for (let i = 0; i < array.length; i++) {
       let id = array[i][0];
       let key = array[i][1];
-      await fetch(`http://localhost:3001/tags/${id}`, {
-        mode: 'cors',
-      })
-        .then(async function(response) {
-          if (response.status === 200) {
-            let tags = await response.json();
-            allTags[key] = tags[0].tag;
-          } else {
-            const { status, statusText, url } = response;
-            const errorInfo = { status, statusText, url };
-            dispatch(tagFetchError(errorInfo));
-          }
-        })
-        .catch(function(error) {
-          dispatch(tagFetchError(error));
+      try {
+        let response = await fetch(`http://localhost:3001/tags/${id}`, {
+          mode: 'cors',
         });
+        if (response.status === 200) {
+          let tags = await response.json();
+          allTags[key] = tags[0].tag;
+        } else {
+          const { status, statusText, url } = response;
+          const errorInfo = { status, statusText, url };
+          dispatch(tagFetchError(errorInfo));
+        }
+      } catch (error) {
+        dispatch(tagFetchError(error));
+      }
     }
     dispatch(tagFetchSuccess(allTags));
   };
@@ -94,57 +96,111 @@ export function postTags(options) {
   const { imageId, gridId, value } = options;
   return async function submitTagsToServer(dispatch) {
     dispatch(submitTags());
-    await fetch('http://localhost:3001/tag', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        imageId: imageId,
-        gridId: gridId,
-        value: value,
-      }),
-    })
-      .then(response => {
-        if (response.status === 200) {
-          dispatch(submitSuccess());
-        } else {
-          const { status, statusText, url } = response;
-          const errorInfo = { status, statusText, url };
-          dispatch(submitError(errorInfo));
-        }
-      })
-      .catch(error => {
-        dispatch(submitError(error));
+    try {
+      let response = await fetch('http://localhost:3001/tag', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          imageId: imageId,
+          gridId: gridId,
+          value: value,
+        }),
       });
+
+      if (response.status === 200) {
+        dispatch(submitSuccess());
+      } else {
+        const { status, statusText, url } = response;
+        const errorInfo = { status, statusText, url };
+        dispatch(submitError(errorInfo));
+      }
+    } catch (error) {
+      dispatch(submitError(error));
+    }
   };
 }
 
 export function submitNewImage(key, url) {
   return async function submitImageToServer(dispatch) {
-    await fetch('http://localhost:3001/photo', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        key: key,
-        newUrl: url,
-      }),
-    })
-      .then(response => {
-        if (response.status === 200) {
-          dispatch(submitSuccess());
-        } else {
-          const { status, statusText, url } = response;
-          const errorInfo = { status, statusText, url };
-          dispatch(submitError(errorInfo));
-        }
-      })
-      .catch(error => {
-        dispatch(submitError(error));
+    try {
+      let response = await fetch('http://localhost:3001/photo', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          key: key,
+          newUrl: url,
+        }),
       });
+      if (response.status === 200) {
+        dispatch(submitSuccess());
+      } else {
+        const { status, statusText, url } = response;
+        const errorInfo = { status, statusText, url };
+        dispatch(submitError(errorInfo));
+      }
+    } catch (error) {
+      dispatch(submitError(error));
+    }
   };
+}
+
+export function editImage(options) {
+  const { id, url } = options;
+  return async function submitImageToServer(dispatch) {
+    try {
+      let response = await fetch(`http://localhost:3001/photo/${id}`, {
+        method: 'put',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          newUrl: url,
+        }),
+      });
+
+      if (response.status === 200) {
+        let data = await response.json();
+        dispatch(updateSuccess(data));
+        dispatch(retrieveImageIndex());
+        dispatch(retrieveAllTags());
+      } else {
+        const { status, statusText, url } = response;
+        const errorInfo = { status, statusText, url };
+        dispatch(submitError(errorInfo));
+      }
+    } catch (error) {
+      dispatch(submitError(error));
+    }
+  };
+}
+
+export function deleteImage(id) {
+  return async function deleteThisImage(dispatch) {
+    try {
+      let response = await fetch(`http://localhost:3001/photo/${id}`, {
+        method: 'delete',
+      });
+      if (response.status === 200) {
+        dispatch(updateSuccess(null));
+        dispatch(retrieveImageIndex());
+        dispatch(retrieveAllTags());
+      } else {
+        const { status, statusText, url } = response;
+        const errorInfo = { status, statusText, url };
+        dispatch(submitError(errorInfo));
+      }
+    } catch (error) {
+      dispatch(submitError(error));
+    }
+  };
+}
+
+export function updateSuccess(data) {
+  return { type: UPDATE_SUCCESS, data: data };
 }
 
 export function savingImageStart() {

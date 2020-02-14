@@ -25,6 +25,6 @@ export function CurrentImage(props) {
 
 CurrentImage.propTypes = {
   selectImage: PropTypes.func,
-  currentImage: PropTypes.string,
+  currentImage: PropTypes.object,
   isIndex: PropTypes.bool,
 };
