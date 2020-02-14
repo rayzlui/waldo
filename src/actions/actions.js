@@ -46,20 +46,22 @@ export function retrieveImageIndex() {
 export function retrieveAllTags() {
   return async function allDemTags(dispatch) {
     dispatch(startTagFetch());
-    await fetch('http://localhost:3001/tags', { mode: 'cors' })
-      .then(async function(response) {
-        if (response.status === 200) {
-          let data = await response.json();
-          await dispatch(tagFetchSuccess(data));
-        } else {
-          const { status, statusText, url } = response;
-          const errorInfo = { status, statusText, url };
-          dispatch(tagFetchError(errorInfo));
-        }
-      })
-      .catch(error => {
-        dispatch(tagFetchError(error));
+
+    try {
+      let response = await fetch('http://localhost:3001/tags', {
+        mode: 'cors',
       });
+      if (response.status === 200) {
+        let data = await response.json();
+        await dispatch(tagFetchSuccess(data));
+      } else {
+        const { status, statusText, url } = response;
+        const errorInfo = { status, statusText, url };
+        dispatch(tagFetchError(errorInfo));
+      }
+    } catch (error) {
+      dispatch(tagFetchError(error));
+    }
   };
 }
 
