@@ -51,6 +51,18 @@ app.get('/tags', function(req, res) {
   });
 });
 
+app.delete('/photo/:id', function(req, res) {
+  //need to figure out a way to delete the photo from tags that have other tags in other photos, and delete the photos that only had tags from this image.
+  const id = req.params.id;
+  Photos.deleteOne({ _id: id }, err => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send('Okay');
+    }
+  });
+});
+
 app.post('/photo', (req, res) => {
   const { key, newUrl } = req.body;
   Photos.findOne({ photo: newUrl }, (err, url) => {
