@@ -21,6 +21,7 @@ import {
   RESET_TAG_SEARCH,
   SAVING_IMAGE_START,
   UPDATE_SUCCESS,
+  RESET_CURRENT_IMAGE,
 } from './actionTypes';
 
 export function retrieveImageIndex() {
@@ -97,7 +98,7 @@ export function postTags(options) {
   return async function submitTagsToServer(dispatch) {
     dispatch(submitTags());
     try {
-      let response = await fetch('http://localhost:3001/tag', {
+      let response = await fetch('http://localhost:3001/tags', {
         method: 'post',
         headers: {
           'Content-Type': 'application/json',
@@ -125,7 +126,7 @@ export function postTags(options) {
 export function submitNewImage(key, url) {
   return async function submitImageToServer(dispatch) {
     try {
-      let response = await fetch('http://localhost:3001/photo', {
+      let response = await fetch('http://localhost:3001/photos', {
         method: 'post',
         headers: {
           'Content-Type': 'application/json',
@@ -152,7 +153,7 @@ export function editImage(options) {
   const { id, url } = options;
   return async function submitImageToServer(dispatch) {
     try {
-      let response = await fetch(`http://localhost:3001/photo/${id}`, {
+      let response = await fetch(`http://localhost:3001/photos/${id}`, {
         method: 'put',
         headers: {
           'Content-Type': 'application/json',
@@ -181,7 +182,7 @@ export function editImage(options) {
 export function deleteImage(id) {
   return async function deleteThisImage(dispatch) {
     try {
-      let response = await fetch(`http://localhost:3001/photo/${id}`, {
+      let response = await fetch(`http://localhost:3001/photos/${id}`, {
         method: 'delete',
       });
       if (response.status === 200) {
@@ -197,6 +198,10 @@ export function deleteImage(id) {
       dispatch(submitError(error));
     }
   };
+}
+
+export function resetCurrentImage(imageId) {
+  return { type: RESET_CURRENT_IMAGE, id: imageId };
 }
 
 export function updateSuccess(data) {
