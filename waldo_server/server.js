@@ -51,7 +51,7 @@ app.get('/tags', function(req, res) {
   });
 });
 
-app.delete('/photo/:id', function(req, res) {
+app.delete('/photos/:id', function(req, res) {
   //need to figure out a way to delete the photo from tags that have other tags in other photos, and delete the photos that only had tags from this image.
   const id = req.params.id;
   Photos.deleteOne({ _id: id }, err => {
@@ -63,7 +63,7 @@ app.delete('/photo/:id', function(req, res) {
   });
 });
 
-app.post('/photo', (req, res) => {
+app.post('/photos', (req, res) => {
   const { key, newUrl } = req.body;
   Photos.findOne({ photo: newUrl }, (err, url) => {
     if (url === null) {
@@ -86,7 +86,7 @@ app.post('/photo', (req, res) => {
   });
 });
 
-app.put('/photo/:id', (req, res) => {
+app.put('/photos/:id', (req, res) => {
   const { newUrl } = req.body;
   const id = req.params.id;
   Photos.findOne({ _id: id }, (err, image) => {
@@ -107,7 +107,7 @@ app.put('/photo/:id', (req, res) => {
   });
 });
 
-app.post('/tag', (req, res) => {
+app.post('/tags', (req, res) => {
   const { imageId, gridId, value } = req.body;
   let newTags = [];
   //we want to add an array of [id, div] into the tag database. we want to find that
@@ -144,7 +144,7 @@ app.post('/tag', (req, res) => {
       //we will also push the array of [div.id, tag] into the photo db.
       let copy = photo.tags.slice();
       copy.push(newTags);
-      photo.tags = newTags;
+      photo.tags = copy;
       photo.save(function(err) {
         if (err) {
           console.log('Unable to save tags to photo');
