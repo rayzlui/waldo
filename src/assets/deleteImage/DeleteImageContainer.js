@@ -4,15 +4,13 @@ import { deleteImage } from '../../actions/actions';
 
 function mapStateToProps(state) {
   return {
-    currentImage: state.currentImage,
+    currentImage: state.index.currentImage,
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    deleteImage: id => dispatch(deleteImage(id)),
-  };
-}
+const mapDispatchToProps = {
+  deleteImage: deleteImage,
+};
 
 export const DeleteImageContainer = connect(
   mapStateToProps,
