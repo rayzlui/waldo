@@ -70,7 +70,7 @@ app.post('/photos', (req, res) => {
       let newPhoto = new Photos({
         key: key,
         photo: newUrl,
-        tags: [],
+        tags: {},
       });
       newPhoto.save(err => {
         if (err) {
@@ -109,17 +109,18 @@ app.put('/photos/:id', (req, res) => {
 
 app.post('/tags', (req, res) => {
   const { imageId, gridId, value } = req.body;
-  let newTags = [];
+  let tagId;
   //we want to add an array of [id, div] into the tag database. we want to find that
   //tag or create one if it doesn't exist. However findoneandupdate requires an update section, in our situation,
   //we aren't updating with a new array, we're adding to it.
   Taggings.findOne({ tag: value }, function(err, tag) {
+    let obj = {};
+    obj[imageId] = gridId;
     if (tag === null) {
       let newTag = new Taggings({
         tag: value,
-        photo_id: [[imageId, gridId]],
+        photo_id: obj,
       });
-      newTags = [newTag._id, gridId];
       newTag.save(err => {
         if (err) {
           console.log(`There was an error ${value} saving new tag.`);
@@ -128,12 +129,11 @@ app.post('/tags', (req, res) => {
           console.log(`Saved ${value} successfully`);
         }
       });
+      tagId = newTag._id;
     } else {
-      let copy = tag.photo_id;
-      copy.push([imageId, gridId]);
-      tag.photo_id = copy;
+      tag.photo_id[imageId] = gridId;
       tag.save();
-      newTags = [tag._id, gridId];
+      tagId = tag._id;
     }
   });
   Photos.findOne({ key: imageId }, (err, photo) => {
@@ -142,9 +142,7 @@ app.post('/tags', (req, res) => {
       res.send({ status: 505, message: 'Server Down' });
     } else {
       //we will also push the array of [div.id, tag] into the photo db.
-      let copy = photo.tags.slice();
-      copy.push(newTags);
-      photo.tags = copy;
+      photo.tags[gridId] = tagId;
       photo.save(function(err) {
         if (err) {
           console.log('Unable to save tags to photo');
