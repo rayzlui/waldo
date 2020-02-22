@@ -8,17 +8,15 @@ export function CurrentImage(props) {
   let { currentImage, selectImage, isIndex } = props;
   if (!currentImage) return null;
   let className = isIndex ? 'select__index' : 'main__image';
+  if (!selectImage) {
+    selectImage = () => null;
+  }
   return (
     <img
       src={currentImage.photo}
       className={className}
       onClick={() => selectImage(currentImage)}
       alt={'ohnoesy i broked'}
-      style={{
-        //height: 500 / this.props.height,
-        //width: 800 / this.props.width,
-        display: 'inline-block',
-      }}
     />
   );
 }
