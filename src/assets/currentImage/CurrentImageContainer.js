@@ -3,7 +3,7 @@ import { CurrentImage } from './CurrentImageView';
 
 function mapStateToProps(state) {
   return {
-    currentImage: state.currentImage,
+    currentImage: state.index.currentImage,
   };
 }
 
