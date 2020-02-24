@@ -54,7 +54,7 @@ export function retrieveAllTags() {
       });
       if (response.status === 200) {
         let data = await response.json();
-        await dispatch(tagFetchSuccess(data));
+        dispatch(tagFetchSuccess(data));
       } else {
         const { status, statusText, url } = response;
         const errorInfo = { status, statusText, url };
@@ -117,6 +117,25 @@ export function postTags(options) {
         const errorInfo = { status, statusText, url };
         dispatch(submitError(errorInfo));
       }
+    } catch (error) {
+      dispatch(submitError(error));
+    }
+  };
+}
+
+export function overrideTags(tagId, imageKey, gridId) {
+  return async function removeTags(dispatch) {
+    try {
+      await fetch(`http://localhost:3001/tags/${tagId}`, {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          imageKey,
+          gridId,
+        }),
+      });
     } catch (error) {
       dispatch(submitError(error));
     }
