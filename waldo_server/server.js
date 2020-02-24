@@ -30,7 +30,6 @@ app.use(express.urlencoded());
 
 //Routes
 app.get('/', function(req, res) {
-  //this is the index, we want to send all photos with id's to the front end for the user to "select a photo"
   Photos.find({}, function(err, photos) {
     if (err) {
       throw err;
@@ -41,7 +40,6 @@ app.get('/', function(req, res) {
 });
 
 app.get('/tags', function(req, res) {
-  //this is the index, we want to send all photos with id's to the front end for the user to "select a photo"
   Taggings.find({}, function(err, photos) {
     if (err) {
       throw err;
@@ -110,9 +108,6 @@ app.put('/photos/:id', (req, res) => {
 app.post('/tags', (req, res) => {
   const { imageId, gridId, value } = req.body;
   let tagId;
-  //we want to add an array of [id, div] into the tag database. we want to find that
-  //tag or create one if it doesn't exist. However findoneandupdate requires an update section, in our situation,
-  //we aren't updating with a new array, we're adding to it.
   Taggings.findOne({ tag: value }, function(err, tag) {
     let obj = {};
     obj[imageId] = gridId;
@@ -138,10 +133,8 @@ app.post('/tags', (req, res) => {
   });
   Photos.findOne({ key: imageId }, (err, photo) => {
     if (err) {
-      //if there's an error that means the database is down.
       res.send({ status: 505, message: 'Server Down' });
     } else {
-      //we will also push the array of [div.id, tag] into the photo db.
       photo.tags[gridId] = tagId;
       photo.save(function(err) {
         if (err) {
@@ -166,6 +159,30 @@ app.get('/tags/:id', (req, res) => {
       throw err;
     } else {
       res.send(data);
+    }
+  });
+});
+
+app.post('/tags/:id', (req, res) => {
+  let id = req.params.id;
+  let { imageKey, gridId } = req.body;
+  Taggings.find({ _id: id }, function(err, data) {
+    if (err) {
+      console.log(`Unable to find tag ${id}.`);
+      throw err;
+    } else {
+      console.log(`deleting ${data.photo_id[imageKey]}`);
+      delete data.photo_id[imageKey];
+      console.log('deleted');
+    }
+  });
+  Photos.find({ key: imageKey }, (err, data) => {
+    if (err) {
+      console.log(`Unable to find image with key: ${imageKey}`);
+    } else {
+      console.log(`deleting ${data.tags[gridId]}`);
+      delete data.tags[gridId];
+      console.log('deleted');
     }
   });
 });
