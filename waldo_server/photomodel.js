@@ -6,7 +6,7 @@ let photoSchema = new Schema(
   {
     key: Number,
     photo: String, //this will be a url LINK to a photo online.
-    tags: Object,
+    tags: Map,
   },
   { collection: 'Photos' },
 );
