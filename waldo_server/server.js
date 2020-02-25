@@ -49,10 +49,18 @@ app.get('/tags', function(req, res) {
   });
 });
 
-app.delete('/photos/:id', function(req, res) {
+app.delete('/photos/:key', function(req, res) {
   //need to figure out a way to delete the photo from tags that have other tags in other photos, and delete the photos that only had tags from this image.
-  const id = req.params.id;
-  Photos.deleteOne({ _id: id }, err => {
+  const key = req.params.key;
+  Taggings.find({}, (err, data) => {
+    data.forEach(tag => {
+      if (tag.photo_id[key]) {
+        delete tag.photo_id[key];
+      }
+      tag.save();
+    });
+  });
+  Photos.deleteOne({ key: key }, err => {
     if (err) {
       res.send(err);
     } else {
@@ -65,10 +73,11 @@ app.post('/photos', (req, res) => {
   const { key, newUrl } = req.body;
   Photos.findOne({ photo: newUrl }, (err, url) => {
     if (url === null) {
+      let obj = {};
       let newPhoto = new Photos({
         key: key,
         photo: newUrl,
-        tags: {},
+        tags: obj,
       });
       newPhoto.save(err => {
         if (err) {
@@ -135,7 +144,7 @@ app.post('/tags', (req, res) => {
     if (err) {
       res.send({ status: 505, message: 'Server Down' });
     } else {
-      photo.tags[gridId] = tagId;
+      photo.tags.set(gridId.toString(), tagId);
       photo.save(function(err) {
         if (err) {
           console.log('Unable to save tags to photo');
@@ -159,30 +168,6 @@ app.get('/tags/:id', (req, res) => {
       throw err;
     } else {
       res.send(data);
-    }
-  });
-});
-
-app.post('/tags/:id', (req, res) => {
-  let id = req.params.id;
-  let { imageKey, gridId } = req.body;
-  Taggings.find({ _id: id }, function(err, data) {
-    if (err) {
-      console.log(`Unable to find tag ${id}.`);
-      throw err;
-    } else {
-      console.log(`deleting ${data.photo_id[imageKey]}`);
-      delete data.photo_id[imageKey];
-      console.log('deleted');
-    }
-  });
-  Photos.find({ key: imageKey }, (err, data) => {
-    if (err) {
-      console.log(`Unable to find image with key: ${imageKey}`);
-    } else {
-      console.log(`deleting ${data.tags[gridId]}`);
-      delete data.tags[gridId];
-      console.log('deleted');
     }
   });
 });
