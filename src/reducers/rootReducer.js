@@ -2,7 +2,6 @@ import { combineReducers } from 'redux';
 import { gameTagsReducer } from './gameTagsReducer';
 import { imageIndexReducer } from './imageIndexReducer';
 import { submitTagsReducer } from './submitTagsReducer';
-import { currentImageReducer } from './currentImageReducer';
 import { isTagModeReducer } from './isTagModeReducer';
 import { gameScoreReducer } from './gameScoreReducer';
 import { networkErrorReducer } from './networkErrorReducer';
@@ -15,7 +14,6 @@ export const rootReducer = combineReducers({
   index: imageIndexReducer,
   tags: gameTagsReducer,
   submitError: submitTagsReducer,
-  currentImage: currentImageReducer,
   isTagMode: isTagModeReducer,
   gameScore: gameScoreReducer,
   currentGrid: currentGridReducer,
