@@ -73,7 +73,7 @@ app.post('/photos', (req, res) => {
   const { key, newUrl } = req.body;
   Photos.findOne({ photo: newUrl }, (err, url) => {
     if (url === null) {
-      let obj = {};
+      let obj = {}
       let newPhoto = new Photos({
         key: key,
         photo: newUrl,
@@ -168,6 +168,30 @@ app.get('/tags/:id', (req, res) => {
       throw err;
     } else {
       res.send(data);
+    }
+  });
+});
+
+app.post('/tags/:id', (req, res) => {
+  let id = req.params.id;
+  let { imageKey, gridId } = req.body;
+  Taggings.findOne({ _id: id }, function(err, data) {
+    if (err) {
+      console.log(`Unable to find tag ${id}.`);
+      throw err;
+    } else {
+      console.log(`deleting ${data.photo_id}`);
+      delete data.photo_id[imageKey];
+      console.log('deleted');
+    }
+  });
+  Photos.findOne({ key: imageKey }, (err, data) => {
+    if (err) {
+      console.log(`Unable to find image with key: ${imageKey}`);
+    } else {
+      console.log(`deleting ${data.tags[gridId]}`);
+      delete data.tags[gridId];
+      console.log('deleted');
     }
   });
 });
