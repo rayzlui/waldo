@@ -198,10 +198,10 @@ export function editImage(options) {
   };
 }
 
-export function deleteImage(id) {
+export function deleteImage(key) {
   return async function deleteThisImage(dispatch) {
     try {
-      let response = await fetch(`http://localhost:3001/photos/${id}`, {
+      let response = await fetch(`http://localhost:3001/photos/${key}`, {
         method: 'delete',
       });
       if (response.status === 200) {
