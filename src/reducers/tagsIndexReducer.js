@@ -13,12 +13,14 @@ export function tagsIndexReducer(state = initialState, action) {
   switch (action.type) {
     case FETCH_TAG_SUCCESS:
       let organizedData = action.tags.reduce((acc, curr) => {
-        let images = curr.photo_id.map(x => x[0]);
+        let images = curr.photo_id;
         let name = curr.tag;
         if (acc[name] === undefined) {
           acc[name] = images;
         } else {
-          acc[name].concat(images);
+          for (let a in images) {
+            acc[name][a] = images[a];
+          }
         }
         return acc;
       }, {});
