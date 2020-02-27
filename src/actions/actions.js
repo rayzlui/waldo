@@ -109,9 +109,12 @@ export function postTags(options) {
           value: value,
         }),
       });
-
       if (response.status === 200) {
+        let data = await response.json();
         dispatch(submitSuccess());
+        dispatch(tagFetchSuccess(data.tags));
+        dispatch(imageFetchSuccess(data.images));
+        dispatch(resetCurrentImage(data.images.find(x => x.key === imageId)));
       } else {
         const { status, statusText, url } = response;
         const errorInfo = { status, statusText, url };
@@ -219,8 +222,8 @@ export function deleteImage(key) {
   };
 }
 
-export function resetCurrentImage(imageId) {
-  return { type: RESET_CURRENT_IMAGE, id: imageId };
+export function resetCurrentImage(image) {
+  return { type: RESET_CURRENT_IMAGE, image: image };
 }
 
 export function updateSuccess(data) {
