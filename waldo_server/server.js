@@ -73,7 +73,7 @@ app.post('/photos', (req, res) => {
   const { key, newUrl } = req.body;
   Photos.findOne({ photo: newUrl }, (err, url) => {
     if (url === null) {
-      let obj = {}
+      let obj = {};
       let newPhoto = new Photos({
         key: key,
         photo: newUrl,
@@ -151,11 +151,23 @@ app.post('/tags', (req, res) => {
           res.send(err);
         } else {
           console.log('Sucess save to photo');
+          let allImages;
+          Photos.find({}, (err, data) => {
+            if (err === null) {
+              allImages = data;
+            }
+          });
+          let allTags;
+          Taggings.find({}, (err, data) => {
+            if (err === null) {
+              allTags = data;
+              res.send({ images: allImages, tags: allTags });
+            }
+          });
         }
       });
     }
   });
-  res.send('ok');
 });
 
 app.get('/tags/:id', (req, res) => {
