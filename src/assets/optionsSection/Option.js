@@ -17,34 +17,20 @@ export function OptionsView(props) {
   let { gridId, updateScore, currentImage, isTagMode, resetGrid, tags } = props;
   if (isTagMode) return null;
   if (!currentImage || !tags) return null;
-  let imageTags = currentImage.tags.reduce((acc, curr) => {
-    let key = curr[1];
-    let id = curr[0];
-    acc[key] = id;
-    return acc;
-  }, {});
+  let imageTags = currentImage.tags;
   if (imageTags[gridId] === undefined) return null;
   //just take tags from current image because rest isn't necessary?
   let options = [];
   let tag;
   let val;
   let randomKey;
-  //random decides which select option is going to be the correct one.
-  //if we're playing game we should ONLY USE KEYS THAT HAVE VALUES.
   let tagKeys = Object.keys(imageTags);
-  tagKeys.splice(tagKeys.indexOf(gridId.toString()), 1);
-  //remove id from the wrong options to prevent duplicate correct answer.
-
   let limit = tagKeys.length > 4 ? 4 : tagKeys.length; //
-
-  let winningLocation = Math.floor(Math.random() * limit);
-  //random is
-  for (let i = 0; i <= limit; i++) {
-    //randomKey gets a random id from the tags
-
-    //val is true/false. if val == 1, it's the correct option, if val == 0, it's incorrect.
+  tagKeys.splice(tagKeys.indexOf(gridId.toString()), 1);
+  let winningLocation = Math.floor(Math.random() * (limit - 1));
+  for (let i = 0; i < limit; i++) {
     if (i === winningLocation) {
-      tag = tags[imageTags[gridId]];
+      tag = tags[imageTags[gridId]].tag;
       val = 1;
       randomKey = gridId;
     } else {
@@ -53,7 +39,7 @@ export function OptionsView(props) {
         Math.floor((tagKeys.length - 1) * Math.random()),
         1,
       )[0];
-      tag = tags[imageTags[randomKey]];
+      tag = tags[imageTags[randomKey]].tag;
       val = 0;
     }
     options.push(
