@@ -1,10 +1,5 @@
 import { connect } from 'react-redux';
-import {
-  postTags,
-  resetGrid,
-  resetCurrentImage,
-  overrideTags,
-} from '../../actions/actions';
+import { postTags, resetGrid, overrideTags } from '../../actions/actions';
 import { InputBox } from './InputBarView';
 
 function mapStateToProps(state, ownProps) {
