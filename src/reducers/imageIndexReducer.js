@@ -34,9 +34,7 @@ export function imageIndexReducer(state = initialState, action) {
     case UPDATE_SUCCESS:
       return Object.assign({}, state, { currentImage: action.data });
     case RESET_CURRENT_IMAGE:
-      let id = action.id;
-      let refreshedImage = state.index.find(x => x.key === id);
-      return Object.assign({}, state, { currentImage: refreshedImage });
+      return Object.assign({}, state, { currentImage: action.image });
     case VIEW_TAGS:
       return Object.assign({}, state, { currentImage: null });
 
