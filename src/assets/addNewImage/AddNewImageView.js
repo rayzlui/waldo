@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 export function AddNewImageView(props) {
   const { index, submitImage } = props;
-  let keyNum = index.length;
+  let keyNum = index[index.length - 1] ? index[index.length - 1].key + 1 : 0; //whatever is the last image key, we add 1.
   //we'll pass index length as the key because that's how many images there currently are.
   function handleSubmit(event) {
     let key = event.keyCode || event.which;
