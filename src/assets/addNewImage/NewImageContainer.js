@@ -4,7 +4,7 @@ import { submitNewImage } from '../../actions/actions';
 
 function mapStateToProps(state) {
   return {
-    index: state.index,
+    index: state.index.index,
   };
 }
 
