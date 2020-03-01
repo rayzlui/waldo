@@ -6,22 +6,21 @@ export function TagsView(props) {
   const { database, currentSearch } = searchedTag;
   if (!isViewingTags) return null;
   function buildTagSection(name, imageKeys) {
-    let images = imageKeys.map((key, index) => {
-      if (key === null) {
-        return null;
-      }
-      let correctImg = imageIndex.find(img => img.key === key);
+    console.log(name, imageKeys);
+    let images = [];
+    for (let i in imageKeys) {
+      let correctImg = imageIndex[i];
       let imageSrc = correctImg.photo;
-      return (
+      images.push(
         <img
           className={'thumbnail__sized'}
           src={imageSrc}
           alt={`it's a ${name}`}
-          key={name + index}
+          key={name + i}
           onClick={() => selectImage(correctImg)}
-        />
+        />,
       );
-    });
+    }
     let sect = (
       <section key={name}>
         <h3>{name}</h3>
