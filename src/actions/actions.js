@@ -130,7 +130,7 @@ export function overrideTags(tagId, imageKey, gridId) {
   return async function removeTags(dispatch) {
     try {
       await fetch(`http://localhost:3001/tags/${tagId}`, {
-        method: 'post',
+        method: 'put',
         headers: {
           'Content-Type': 'application/json',
         },
