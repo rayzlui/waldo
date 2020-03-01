@@ -184,7 +184,7 @@ app.get('/tags/:id', (req, res) => {
   });
 });
 
-app.post('/tags/:id', (req, res) => {
+app.put('/tags/:id', (req, res) => {
   let id = req.params.id;
   let { imageKey, gridId } = req.body;
   Taggings.findOne({ _id: id }, function(err, data) {
@@ -192,9 +192,18 @@ app.post('/tags/:id', (req, res) => {
       console.log(`Unable to find tag ${id}.`);
       throw err;
     } else {
-      console.log(`deleting ${data.photo_id}`);
+      console.log(`deleting ${imageKey} from ${data.photo_id}`);
       delete data.photo_id[imageKey];
-      console.log('deleted');
+      console.log(`deleted ${imageKey}`);
+      if (Object.keys(data.photo_id).length === 0) {
+        Taggings.deleteOne({ _id: id }, err => {
+          if (err) {
+            console.log(`Unable to delete Tagging: ${id}`);
+          } else {
+            console.log(`Deleted ${id} because it's no longer has any tags.`);
+          }
+        });
+      }
     }
   });
   Photos.findOne({ key: imageKey }, (err, data) => {
