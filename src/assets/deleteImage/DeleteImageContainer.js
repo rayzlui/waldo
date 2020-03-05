@@ -5,6 +5,7 @@ import { deleteImage } from '../../actions/actions';
 function mapStateToProps(state) {
   return {
     currentImage: state.index.currentImage,
+    isViewingTags: state.isViewingTags,
   };
 }
 
