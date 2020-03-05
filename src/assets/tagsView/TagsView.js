@@ -6,7 +6,6 @@ export function TagsView(props) {
   const { database, currentSearch } = searchedTag;
   if (!isViewingTags) return null;
   function buildTagSection(name, imageKeys) {
-    console.log(name, imageKeys);
     let images = [];
     for (let i in imageKeys) {
       let correctImg = imageIndex[i];
