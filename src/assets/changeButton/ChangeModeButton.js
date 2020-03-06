@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export function ChangeToTagButton(props) {
-  let { isTagMode, changeGameMode } = props;
+  let { isTagMode, changeGameMode, isViewingTags, currentImage } = props;
+  if (isViewingTags || currentImage === null) return null;
   if (!isTagMode) {
     return (
       <button id="change-tag-button" onClick={() => changeGameMode()}>
@@ -21,6 +22,7 @@ export function ChangeToTagButton(props) {
 ChangeToTagButton.propTypes = {
   isTagMode: PropTypes.bool,
   changeGameMode: PropTypes.func,
+  currentImage: PropTypes.bool,
 };
 
 export function ViewTagsButton(props) {
