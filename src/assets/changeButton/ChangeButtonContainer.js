@@ -5,6 +5,8 @@ import { ChangeToTagButton } from './ChangeModeButton';
 function mapStateToProps(state) {
   return {
     isTagMode: state.isTagMode,
+    isViewingTags: state.isViewingTags,
+    currentImage: state.index.currentImage,
   };
 }
 
