@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { DeleteImageButton } from './DeleteImageView';
-import { deleteImage } from '../../actions/actions';
+import { deleteImage } from '../../actions/asyncActions';
 
 function mapStateToProps(state) {
   return {
