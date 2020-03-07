@@ -1,6 +1,6 @@
-import { editImage } from '../../actions/actions';
 import { EditImageView } from './EditImageView';
 import { connect } from 'react-redux';
+import { editImage } from '../../actions/asyncActions';
 
 function mapStateToProps(state) {
   return {
