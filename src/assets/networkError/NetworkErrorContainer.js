@@ -1,6 +1,9 @@
 import { connect } from 'react-redux';
-import { retrieveImageIndex, retrieveAllTags } from '../../actions/actions';
 import { NetworkError } from './NetworkErrorView';
+import {
+  retrieveImageIndex,
+  retrieveAllTags,
+} from '../../actions/asyncActions';
 
 function mapStateToProps(state) {
   return {
