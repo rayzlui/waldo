@@ -1,4 +1,4 @@
-import { viewTags, searchTagNames } from '../../actions/actions';
+import { searchTagNames, viewTags } from '../../actions/actions';
 import { connect } from 'react-redux';
 import { TagSearchBarView } from './TagSearchBar';
 
