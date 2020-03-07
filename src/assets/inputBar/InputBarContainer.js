@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
-import { postTags, resetGrid, overrideTags } from '../../actions/actions';
+import { resetGrid } from '../../actions/actions';
 import { InputBox } from './InputBarView';
+import { postTags, overrideTags } from '../../actions/asyncActions';
 
 function mapStateToProps(state, ownProps) {
   let { gridId } = ownProps;
