@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { AddNewImageView } from './AddNewImageView';
-import { submitNewImage } from '../../actions/actions';
+import { submitNewImage } from '../../actions/asyncActions';
 
 function mapStateToProps(state) {
   return {
