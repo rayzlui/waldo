@@ -4,6 +4,7 @@ import {
   toggleMode,
   updateScore,
   resetScore,
+  resetError,
 } from './actions';
 import {
   SAVING_IMAGE_START,
@@ -11,6 +12,7 @@ import {
   TOGGLE_MODE,
   UPDATE_SCORE,
   RESET_SCORE,
+  RESET_ERROR,
 } from './actionTypes';
 
 function basicActionTestHelper(action, actionType) {
@@ -25,4 +27,5 @@ basicActionTestHelper(savingImageStart, SAVING_IMAGE_START);
 basicActionTestHelper(resetGrid, RESET_GRID);
 basicActionTestHelper(toggleMode, TOGGLE_MODE);
 basicActionTestHelper(updateScore, UPDATE_SCORE);
-basicActionTestHelper(resetScore, RESET_SCORE)
+basicActionTestHelper(resetScore, RESET_SCORE);
+basicActionTestHelper(resetError, RESET_ERROR)
