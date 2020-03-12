@@ -1,5 +1,5 @@
-import { savingImageStart } from "./actions";
-import { SAVING_IMAGE_START } from "./actionTypes";
+import { savingImageStart, resetGrid } from "./actions";
+import { SAVING_IMAGE_START, RESET_GRID } from "./actionTypes";
 
 function basicActionTestHelper(action, actionType) {
   return describe(`${action.name}`, () => {
@@ -10,3 +10,4 @@ function basicActionTestHelper(action, actionType) {
 }
 
 basicActionTestHelper(savingImageStart, SAVING_IMAGE_START)
+basicActionTestHelper(resetGrid, RESET_GRID)
