@@ -5,6 +5,7 @@ import {
   updateScore,
   resetScore,
   resetError,
+  startImageFetch,
 } from './actions';
 import {
   SAVING_IMAGE_START,
@@ -13,6 +14,7 @@ import {
   UPDATE_SCORE,
   RESET_SCORE,
   RESET_ERROR,
+  START_FETCHING_IMAGE,
 } from './actionTypes';
 
 function basicActionTestHelper(action, actionType) {
@@ -28,4 +30,5 @@ basicActionTestHelper(resetGrid, RESET_GRID);
 basicActionTestHelper(toggleMode, TOGGLE_MODE);
 basicActionTestHelper(updateScore, UPDATE_SCORE);
 basicActionTestHelper(resetScore, RESET_SCORE);
-basicActionTestHelper(resetError, RESET_ERROR)
+basicActionTestHelper(resetError, RESET_ERROR);
+basicActionTestHelper(startImageFetch, START_FETCHING_IMAGE)
