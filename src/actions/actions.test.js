@@ -7,6 +7,7 @@ import {
   resetError,
   startImageFetch,
   startTagFetch,
+  submitTags,
 } from './actions';
 import {
   SAVING_IMAGE_START,
@@ -17,6 +18,7 @@ import {
   RESET_ERROR,
   START_FETCHING_IMAGE,
   START_FETCH_TAGS,
+  SUBMIT_TAGS_START,
 } from './actionTypes';
 
 function basicActionTestHelper(action, actionType) {
@@ -34,4 +36,5 @@ basicActionTestHelper(updateScore, UPDATE_SCORE);
 basicActionTestHelper(resetScore, RESET_SCORE);
 basicActionTestHelper(resetError, RESET_ERROR);
 basicActionTestHelper(startImageFetch, START_FETCHING_IMAGE);
-basicActionTestHelper(startTagFetch, START_FETCH_TAGS)
+basicActionTestHelper(startTagFetch, START_FETCH_TAGS);
+basicActionTestHelper(submitTags, SUBMIT_TAGS_START)
