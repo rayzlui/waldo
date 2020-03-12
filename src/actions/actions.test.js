@@ -1,5 +1,5 @@
-import { savingImageStart, resetGrid } from "./actions";
-import { SAVING_IMAGE_START, RESET_GRID } from "./actionTypes";
+import { savingImageStart, resetGrid, toggleMode } from './actions';
+import { SAVING_IMAGE_START, RESET_GRID, TOGGLE_MODE } from './actionTypes';
 
 function basicActionTestHelper(action, actionType) {
   return describe(`${action.name}`, () => {
@@ -9,5 +9,6 @@ function basicActionTestHelper(action, actionType) {
   });
 }
 
-basicActionTestHelper(savingImageStart, SAVING_IMAGE_START)
-basicActionTestHelper(resetGrid, RESET_GRID)
+basicActionTestHelper(savingImageStart, SAVING_IMAGE_START);
+basicActionTestHelper(resetGrid, RESET_GRID);
+basicActionTestHelper(toggleMode, TOGGLE_MODE);
