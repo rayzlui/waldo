@@ -11,6 +11,7 @@ import {
   submitSuccess,
   submitError,
   viewTags,
+  viewImage,
 } from './actions';
 import {
   SAVING_IMAGE_START,
@@ -25,6 +26,7 @@ import {
   SUBMIT_TAGS_SUCCESS,
   SUBMIT_TAGS_ERROR,
   VIEW_TAGS,
+  VIEW_IMAGE,
 } from './actionTypes';
 
 function basicActionTestHelper(action, actionType) {
@@ -46,4 +48,5 @@ basicActionTestHelper(startTagFetch, START_FETCH_TAGS);
 basicActionTestHelper(submitTags, SUBMIT_TAGS_START);
 basicActionTestHelper(submitSuccess, SUBMIT_TAGS_SUCCESS);
 basicActionTestHelper(submitError, SUBMIT_TAGS_ERROR);
-basicActionTestHelper(viewTags, VIEW_TAGS)
+basicActionTestHelper(viewTags, VIEW_TAGS);
+basicActionTestHelper(viewImage, VIEW_IMAGE)
