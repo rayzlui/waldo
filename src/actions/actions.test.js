@@ -15,6 +15,7 @@ import {
   resetCurrentImage,
   updateSuccess,
   changeGrid,
+  selectImage,
 } from './actions';
 import {
   SAVING_IMAGE_START,
@@ -33,6 +34,7 @@ import {
   RESET_CURRENT_IMAGE,
   UPDATE_SUCCESS,
   CHANGE_GRID,
+  SELECT_IMAGE,
 } from './actionTypes';
 
 function basicActionTestHelper(action, actionType) {
@@ -88,4 +90,5 @@ parameterActionTestHelper(
 );
 
 parameterActionTestHelper(updateSuccess, UPDATE_SUCCESS, 'data', mockData);
-parameterActionTestHelper(changeGrid, CHANGE_GRID, 'gridId', 9)
+parameterActionTestHelper(changeGrid, CHANGE_GRID, 'gridId', 9);
+parameterActionTestHelper(selectImage, SELECT_IMAGE, 'data', mockData)
