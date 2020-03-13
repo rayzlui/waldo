@@ -52,4 +52,4 @@ basicActionTestHelper(submitSuccess, SUBMIT_TAGS_SUCCESS);
 basicActionTestHelper(submitError, SUBMIT_TAGS_ERROR);
 basicActionTestHelper(viewTags, VIEW_TAGS);
 basicActionTestHelper(viewImage, VIEW_IMAGE);
-basicActionTestHelper(resetTagSearch, RESET_TAG_SEARCH)
+basicActionTestHelper(resetTagSearch, RESET_TAG_SEARCH);
