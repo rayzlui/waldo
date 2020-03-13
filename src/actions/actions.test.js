@@ -9,10 +9,10 @@ import {
   startTagFetch,
   submitTags,
   submitSuccess,
-  submitError,
   viewTags,
   viewImage,
   resetTagSearch,
+  resetCurrentImage,
 } from './actions';
 import {
   SAVING_IMAGE_START,
@@ -25,10 +25,10 @@ import {
   START_FETCH_TAGS,
   SUBMIT_TAGS_START,
   SUBMIT_TAGS_SUCCESS,
-  SUBMIT_TAGS_ERROR,
   VIEW_TAGS,
   VIEW_IMAGE,
   RESET_TAG_SEARCH,
+  RESET_CURRENT_IMAGE,
 } from './actionTypes';
 
 function basicActionTestHelper(action, actionType) {
@@ -49,7 +49,36 @@ basicActionTestHelper(startImageFetch, START_FETCHING_IMAGE);
 basicActionTestHelper(startTagFetch, START_FETCH_TAGS);
 basicActionTestHelper(submitTags, SUBMIT_TAGS_START);
 basicActionTestHelper(submitSuccess, SUBMIT_TAGS_SUCCESS);
-basicActionTestHelper(submitError, SUBMIT_TAGS_ERROR);
 basicActionTestHelper(viewTags, VIEW_TAGS);
 basicActionTestHelper(viewImage, VIEW_IMAGE);
 basicActionTestHelper(resetTagSearch, RESET_TAG_SEARCH);
+
+function parameterActionTestHelper(action, actionType, key, input) {
+  return describe(`${action.name}`, () => {
+    it(`should return { type: ${actionType} ${key}: ${input}}`, () => {
+      let wrapper = action(input);
+      expect(wrapper.type).toEqual(actionType);
+      expect(wrapper[key]).toEqual(input);
+    });
+  });
+}
+
+let mockData = {
+  tags: [
+    ['5e2b8a7f053daa085dfd6904', '17'],
+    ['5cb6c63f4a885951900ae0fd', '19'],
+    ['5e2b8a7f053daa085dfd6905', '22'],
+    ['5e2b8a7f053daa085dfd6906', '34'],
+  ],
+  _id: '5cb6c6094f41f3516e2fc4f4',
+  key: 2,
+  photo:
+    'https://www.muraldecal.com/en/img/fomi030_1-jpg/folder/products-detalle-muestras-grandes/wall-murals-minions.jpg',
+  __v: 2,
+};
+parameterActionTestHelper(
+  resetCurrentImage,
+  RESET_CURRENT_IMAGE,
+  'image',
+  mockData,
+);
