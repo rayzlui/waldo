@@ -13,6 +13,7 @@ import {
   viewImage,
   resetTagSearch,
   resetCurrentImage,
+  updateSuccess,
 } from './actions';
 import {
   SAVING_IMAGE_START,
@@ -29,6 +30,7 @@ import {
   VIEW_IMAGE,
   RESET_TAG_SEARCH,
   RESET_CURRENT_IMAGE,
+  UPDATE_SUCCESS,
 } from './actionTypes';
 
 function basicActionTestHelper(action, actionType) {
@@ -82,3 +84,5 @@ parameterActionTestHelper(
   'image',
   mockData,
 );
+
+parameterActionTestHelper(updateSuccess, UPDATE_SUCCESS, 'data', mockData)
