@@ -14,6 +14,7 @@ import {
   resetTagSearch,
   resetCurrentImage,
   updateSuccess,
+  changeGrid,
 } from './actions';
 import {
   SAVING_IMAGE_START,
@@ -31,6 +32,7 @@ import {
   RESET_TAG_SEARCH,
   RESET_CURRENT_IMAGE,
   UPDATE_SUCCESS,
+  CHANGE_GRID,
 } from './actionTypes';
 
 function basicActionTestHelper(action, actionType) {
@@ -85,4 +87,5 @@ parameterActionTestHelper(
   mockData,
 );
 
-parameterActionTestHelper(updateSuccess, UPDATE_SUCCESS, 'data', mockData)
+parameterActionTestHelper(updateSuccess, UPDATE_SUCCESS, 'data', mockData);
+parameterActionTestHelper(changeGrid, CHANGE_GRID, 'gridId', 9)
