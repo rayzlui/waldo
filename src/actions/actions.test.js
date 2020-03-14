@@ -21,6 +21,7 @@ import {
   tagFetchSuccess,
   tagFetchError,
   submitError,
+  searchTagNames,
 } from './actions';
 import {
   SAVING_IMAGE_START,
@@ -45,6 +46,7 @@ import {
   FETCH_TAG_SUCCESS,
   FETCHING_TAGS_ERROR,
   SUBMIT_TAGS_ERROR,
+  SEARCH_TAG_NAME,
 } from './actionTypes';
 
 function basicActionTestHelper(action, actionType) {
@@ -116,4 +118,5 @@ parameterActionTestHelper(
 );
 parameterActionTestHelper(tagFetchSuccess, FETCH_TAG_SUCCESS, 'tags', mockData);
 parameterActionTestHelper(tagFetchError, FETCHING_TAGS_ERROR, 'err', mockData);
-parameterActionTestHelper(submitError, SUBMIT_TAGS_ERROR, 'err', mockData)
+parameterActionTestHelper(submitError, SUBMIT_TAGS_ERROR, 'err', mockData);
+parameterActionTestHelper(searchTagNames, SEARCH_TAG_NAME, 'tag', mockData)
