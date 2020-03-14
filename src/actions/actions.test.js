@@ -17,6 +17,7 @@ import {
   changeGrid,
   selectImage,
   imageFetchSuccess,
+  imageFetchError,
 } from './actions';
 import {
   SAVING_IMAGE_START,
@@ -37,6 +38,7 @@ import {
   CHANGE_GRID,
   SELECT_IMAGE,
   FETCH_IMAGE_SUCCESS,
+  FETCHING_IMAGE_ERROR,
 } from './actionTypes';
 
 function basicActionTestHelper(action, actionType) {
@@ -98,5 +100,11 @@ parameterActionTestHelper(
   imageFetchSuccess,
   FETCH_IMAGE_SUCCESS,
   'data',
+  mockData,
+);
+parameterActionTestHelper(
+  imageFetchError,
+  FETCHING_IMAGE_ERROR,
+  'error',
   mockData,
 );
