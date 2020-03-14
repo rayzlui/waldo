@@ -18,6 +18,7 @@ import {
   selectImage,
   imageFetchSuccess,
   imageFetchError,
+  tagFetchSuccess,
 } from './actions';
 import {
   SAVING_IMAGE_START,
@@ -39,6 +40,7 @@ import {
   SELECT_IMAGE,
   FETCH_IMAGE_SUCCESS,
   FETCHING_IMAGE_ERROR,
+  FETCH_TAG_SUCCESS,
 } from './actionTypes';
 
 function basicActionTestHelper(action, actionType) {
@@ -108,3 +110,4 @@ parameterActionTestHelper(
   'error',
   mockData,
 );
+parameterActionTestHelper(tagFetchSuccess, FETCH_TAG_SUCCESS, 'tags', mockData)
